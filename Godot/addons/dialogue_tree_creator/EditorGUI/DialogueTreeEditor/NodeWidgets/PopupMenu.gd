@@ -19,3 +19,9 @@ func _build_recents_popup():
 	recents.clear()
 	for index in recentSearches.size():
 		recents.add_item(recentSearches[index], index)
+		
+
+func _build_recents(recent_searches : PoolStringArray):
+		recents.clear()
+		for index in recent_searches.size():
+			recents.add_item(recent_searches[index], index)

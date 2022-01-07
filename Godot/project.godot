@@ -8,10 +8,26 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Control",
+"class": "DialogueNode",
+"language": "GDScript",
+"path": "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueNode.gd"
+}, {
+"base": "GraphNode",
+"class": "GraphDialogueNode",
+"language": "GDScript",
+"path": "res://DialogueGraphNode.gd"
+} ]
+_global_script_class_icons={
+"DialogueNode": "",
+"GraphDialogueNode": ""
+}
+
 [application]
 
 config/name="DialogueTreeCreator"
-run/main_scene="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/NodeWidgets/CharacterSearchMenu.tscn"
+run/main_scene="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueNode.tscn"
 config/icon="res://icon.png"
 
 [input]

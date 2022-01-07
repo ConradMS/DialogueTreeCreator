@@ -1,12 +1,24 @@
 extends TextEdit
 
-const MIN_SIZE = Vector2(50, 50) 
+const DEFAULT_TEXT = "Lines"
+const FONT_COLOUR = "custom_colors/font_color"
+
+const LIGHT_GRAY = Color(0.5, 0.5, 0.5, 1)
+const WHITE = Color(1, 1, 1, 1)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	text = DEFAULT_TEXT
+	set(FONT_COLOUR, LIGHT_GRAY)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _on_Lines_focus_entered():
+	if text == DEFAULT_TEXT:
+		text = ""
+		set(FONT_COLOUR, WHITE)
+
+
+func _on_Lines_focus_exited():
+	if text == "":
+		text = DEFAULT_TEXT
+		set(FONT_COLOUR, LIGHT_GRAY)

@@ -1,0 +1,70 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://PopupConditionList.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogue_tree_creator/Assets/MagnifyingGlass.png" type="Texture" id=2]
+[ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/Links/ConditionList.gd" type="Script" id=3]
+[ext_resource path="res://addons/dialogue_tree_creator/Assets/plusSymbol.png" type="Texture" id=4]
+[ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/Links/AddConditionButton.gd" type="Script" id=5]
+[ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/Links/AddConditionLine.gd" type="Script" id=6]
+
+[node name="PopupConditionList" type="TextureButton"]
+anchor_right = 0.024
+anchor_bottom = 0.043
+margin_right = 0.424
+margin_bottom = 0.199999
+texture_normal = ExtResource( 2 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConditionList" type="ItemList" parent="."]
+margin_left = 49.0
+margin_top = 1.0
+margin_right = 272.0
+margin_bottom = 226.0
+items = [ "Item 0", null, false, "Item 1", null, false, "Item 2", null, false, "Item 3", null, false, "Item 4", null, false ]
+select_mode = 1
+allow_reselect = true
+auto_height = true
+max_columns = 4
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AddConditionButton" type="TextureButton" parent="."]
+anchor_left = 1.132
+anchor_top = 0.027
+anchor_right = 1.132
+anchor_bottom = 0.027
+margin_left = 224.7
+margin_top = 2.298
+margin_right = 244.7
+margin_bottom = 22.298
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_normal = ExtResource( 4 )
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AddConditionLine" type="LineEdit" parent="AddConditionButton"]
+visible = false
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 196.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+placeholder_text = "New Condition"
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="." to="." method="_on_PopupConditionList_pressed"]
+[connection signal="visibility_changed" from="ConditionList" to="." method="_on_ConditionList_visibility_changed"]
+[connection signal="pressed" from="AddConditionButton" to="AddConditionButton" method="_on_AddConditionButton_pressed"]
+[connection signal="visibility_changed" from="AddConditionButton/AddConditionLine" to="AddConditionButton/AddConditionLine" method="_on_AddConditionLine_visibility_changed"]

@@ -1,9 +1,13 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://DialogueGraphNode.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/Lines.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/NodeWidgets/ExpressionList.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/NodeWidgets/CharacterSearchMenu.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/NodeWidgets/AddLink.tscn" type="PackedScene" id=5]
+[ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/Links/Link.tscn" type="PackedScene" id=6]
 
-[node name="DialogueNode" type="Control"]
+[node name="GraphEdit" type="GraphEdit"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
@@ -11,14 +15,9 @@ __meta__ = {
 }
 
 [node name="DialogueGraphNode" type="GraphNode" parent="."]
-anchor_left = 0.132
-anchor_top = 0.132
-anchor_right = 0.204266
-anchor_bottom = 0.132
-margin_left = -135.168
-margin_top = -79.2
-margin_right = 134.832
-margin_bottom = 78.8
+margin_right = 339.0
+margin_bottom = 158.0
+mouse_filter = 1
 show_close = true
 resizable = true
 slot/0/left_enabled = false
@@ -39,34 +38,72 @@ slot/2/left_color = Color( 1, 1, 1, 1 )
 slot/2/right_enabled = false
 slot/2/right_type = 0
 slot/2/right_color = Color( 1, 1, 1, 1 )
+slot/3/left_enabled = true
+slot/3/left_type = 0
+slot/3/left_color = Color( 1, 1, 1, 1 )
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color( 1, 1, 1, 1 )
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color( 1, 1, 1, 1 )
+slot/4/right_enabled = true
+slot/4/right_type = 0
+slot/4/right_color = Color( 1, 1, 1, 1 )
 script = ExtResource( 1 )
 __meta__ = {
+"_edit_group_": true,
 "_edit_use_anchors_": true
 }
 
 [node name="Lines" type="TextEdit" parent="DialogueGraphNode"]
 margin_left = 16.0
 margin_top = 24.0
-margin_right = 328.0
-margin_bottom = 24.0
-size_flags_vertical = 2
+margin_right = 323.0
+margin_bottom = 56.0
+size_flags_vertical = 3
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LineEdit" type="LineEdit" parent="DialogueGraphNode"]
+[node name="CharacterSearchBar" parent="DialogueGraphNode" instance=ExtResource( 4 )]
 margin_left = 16.0
-margin_top = 107.0
-margin_right = 328.0
-margin_bottom = 131.0
-placeholder_text = "Character Name"
+margin_top = 57.0
+margin_right = 323.0
+margin_bottom = 83.0
 
-[node name="OptionButton" type="OptionButton" parent="DialogueGraphNode"]
+[node name="ExpressionList" parent="DialogueGraphNode" instance=ExtResource( 3 )]
 margin_left = 16.0
-margin_top = 132.0
-margin_right = 328.0
+margin_top = 84.0
+margin_right = 323.0
+margin_bottom = 104.0
+
+[node name="AddLink" parent="DialogueGraphNode" instance=ExtResource( 5 )]
+margin_left = 16.0
+margin_top = 105.0
+margin_right = 323.0
+margin_bottom = 125.0
+
+[node name="Label" parent="DialogueGraphNode/AddLink" index="0"]
+margin_right = 287.0
+
+[node name="AddLinkButton" parent="DialogueGraphNode/AddLink" index="1"]
+margin_left = 287.0
+margin_right = 307.0
+
+[node name="Link" parent="DialogueGraphNode" instance=ExtResource( 6 )]
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 16.0
+margin_top = 126.0
+margin_right = 323.0
 margin_bottom = 152.0
-text = "C"
-items = [ "C", null, false, 2, null, "A", null, false, 1, null, "B", null, false, 2, null, "AB", null, false, 3, null ]
-selected = 0
+
+[connection signal="focus_entered" from="DialogueGraphNode/Lines" to="DialogueGraphNode/Lines" method="_on_Lines_focus_entered"]
+[connection signal="focus_exited" from="DialogueGraphNode/Lines" to="DialogueGraphNode/Lines" method="_on_Lines_focus_exited"]
+[connection signal="item_selected" from="DialogueGraphNode/ExpressionList" to="DialogueGraphNode" method="_on_ExpressionList_item_selected"]
+[connection signal="pressed" from="DialogueGraphNode/AddLink/AddLinkButton" to="DialogueGraphNode" method="_on_AddLinkButton_pressed"]
+
+[editable path="DialogueGraphNode/AddLink"]

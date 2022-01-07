@@ -6,8 +6,6 @@ onready var charLabel = $CharLabel
 
 
 func _ready():
-	popupMenu.rect_position = button.rect_position
-	popupMenu.rect_position.x += button.rect_size.x
 	var status = charLabel.connect("add_recent", popupMenu, "add_recent")
 	
 	if status != OK:
@@ -16,7 +14,7 @@ func _ready():
 
 func _on_PopupButton_pressed():
 	popupMenu.popup()
-	
+	popupMenu.rect_position = get_global_mouse_position()
 	# Simualte a ui_down event to automatically select the first option
 	var ui_down = InputEventAction.new()
 	ui_down.action = "ui_down"

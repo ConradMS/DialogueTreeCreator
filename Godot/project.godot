@@ -39,7 +39,7 @@ _global_script_class_icons={
 [application]
 
 config/name="DialogueTreeCreator"
-run/main_scene="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueTreeControl.tscn"
+run/main_scene="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/Links/Link.tscn"
 config/icon="res://icon.png"
 
 [input]

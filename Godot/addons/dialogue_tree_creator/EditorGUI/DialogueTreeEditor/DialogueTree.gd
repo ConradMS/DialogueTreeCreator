@@ -92,8 +92,10 @@ func node_has_connection(node : String, from_slot):
 func connect_nodes(from : String, from_slot, to : String, to_slot):
 	var possible_connection = node_has_connection(from, from_slot)
 	if possible_connection != null:
-		disconnect_node(possible_connection["from"], possible_connection["from_port"], possible_connection["to"], possible_connection["to_port"])
+		disconnect_nodes(possible_connection["from"], possible_connection["from_port"], possible_connection["to"], possible_connection["to_port"])
+	
 	connect_node(from, from_slot, to, to_slot)
+	add_link_info(from, from_slot, to)
 
 
 func _on_DialogueTree_connection_request(from, from_slot, to, to_slot):
@@ -127,4 +129,22 @@ func disconnect_all_connections(node : String):
 	var connections = get_connection_list()
 	for connection in connections:
 		if connection["from"] == node or connection["to"] == node:
-			disconnect_node(connection["from"], connection["from_port"], connection["to"], connection["to_port"])
+			disconnect_nodes(connection["from"], connection["from_port"], connection["to"], connection["to_port"])
+
+
+func disconnect_nodes(from : String, from_slot, to : String, to_slot):
+	disconnect_node(from, from_slot, to, to_slot)
+	remove_link_info(from, from_slot)
+	
+
+func add_link_info(from : String, from_slot, to : String):
+	var from_node = get_node_by_name(from)
+	var from_link : Link = from_node.links[from_slot]
+	from_link.linked_id = get_node_by_name(to).id
+	
+
+func remove_link_info(from : String, from_slot):
+	var from_node = get_node_by_name(from)
+	var from_link : Link = from_node.links[from_slot]
+	from_link.linked_id = -1
+	

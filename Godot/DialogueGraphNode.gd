@@ -19,8 +19,6 @@ var char_name : String
 var lines : String
 ### Dialogue Node Varaibles ###
 
-var links : Dictionary = {}
-
 signal sync_recents(recents)
 
 func create_title():
@@ -163,3 +161,4 @@ func sync_recent_searches(recents : PoolStringArray):
 	
 func ping_recents(recent):
 	emit_signal("sync_recents", recent)
+	

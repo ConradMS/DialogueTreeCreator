@@ -2,8 +2,11 @@ extends GraphNode
 class_name TreeNode
 
 var id : int
+var links : Dictionary = {}
 
 signal remove_node(id)
+
+
 
 func init(id_i : int):
 	id = id_i

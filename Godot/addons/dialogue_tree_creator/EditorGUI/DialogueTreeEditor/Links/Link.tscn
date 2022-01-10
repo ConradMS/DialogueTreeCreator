@@ -50,6 +50,6 @@ margin_bottom = 26.0
 
 [connection signal="pressed" from="RemoveLink" to="." method="_on_RemoveLink_pressed"]
 [connection signal="value_changed" from="SpinBox" to="." method="_on_SpinBox_value_changed"]
-[connection signal="multi_selected" from="PopupConditionList/ConditionList" to="." method="_on_ConditionList_multi_selected"]
+[connection signal="focus_exited" from="PopupConditionList/ConditionList" to="." method="_on_ConditionList_focus_exited"]
 
 [editable path="PopupConditionList"]

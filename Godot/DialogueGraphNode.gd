@@ -147,6 +147,10 @@ func _add_link_slot():
 
 
 func _remove_link(link_id : int):
+	if links.size() == 1:
+		print("You must have at least one link!")
+		return
+	
 	if !links.has(link_id):
 		printerr("trying to remove a non-existant link")
 	else:

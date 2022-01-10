@@ -25,14 +25,38 @@ margin_right = 1024.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 1024, 30 )
 
-[node name="AddnodeMenu" type="MenuButton" parent="VSplitContainer/OptionsBar"]
-margin_right = 75.0
+[node name="HBoxContainer" type="HBoxContainer" parent="VSplitContainer/OptionsBar"]
+anchor_right = 1.0
+anchor_bottom = 0.806
+margin_bottom = 5.82
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FileMenu" type="MenuButton" parent="VSplitContainer/OptionsBar/HBoxContainer"]
+margin_right = 35.0
 margin_bottom = 30.0
+text = "File"
+items = [ "Save", null, 0, false, false, 0, 0, null, "", false ]
+
+[node name="AddnodeMenu" type="MenuButton" parent="VSplitContainer/OptionsBar/HBoxContainer"]
+margin_left = 39.0
+margin_right = 114.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 75, 30 )
 text = "Add Node"
 items = [ "Dialogue Node", null, 0, false, false, 0, 0, null, "", false, "Dyanmic Node", null, 0, false, false, 1, 0, null, "", false, "Choice Node", null, 0, false, false, 2, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="SettingsMenu" type="MenuButton" parent="VSplitContainer/OptionsBar/HBoxContainer"]
+margin_left = 118.0
+margin_right = 181.0
+margin_bottom = 30.0
+text = "Settings"
+items = [ "Configure", null, 0, false, false, 0, 0, null, "", false ]
 
 [node name="DialogueTree" type="GraphEdit" parent="VSplitContainer"]
 margin_top = 30.0

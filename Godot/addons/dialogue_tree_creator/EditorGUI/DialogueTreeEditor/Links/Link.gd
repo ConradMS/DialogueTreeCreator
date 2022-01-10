@@ -40,4 +40,8 @@ func _on_ConditionList_multi_selected(index, selected):
 
 
 func _on_ConditionList_focus_exited():
-	pass # Replace with function body.
+	var selectedItem : PoolIntArray = conditionsList.get_selected_items()
+	conditions.empty()
+	for item in selectedItem:
+		var condition : String = conditionsList.get_item_text(item)
+		conditions.append(condition)

@@ -1,4 +1,5 @@
 extends GraphEdit
+class_name DialogueTree
 
 
 const NODE_TYPES = {

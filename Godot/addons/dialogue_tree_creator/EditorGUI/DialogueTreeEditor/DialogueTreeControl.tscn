@@ -1,0 +1,49 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueTree.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueTreeControl.gd" type="Script" id=2]
+
+[node name="DialogueTreeControl" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSplitContainer" type="VSplitContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+collapsed = true
+dragger_visibility = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionsBar" type="TextureRect" parent="VSplitContainer"]
+margin_right = 1024.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 1024, 30 )
+
+[node name="AddnodeMenu" type="MenuButton" parent="VSplitContainer/OptionsBar"]
+margin_right = 75.0
+margin_bottom = 30.0
+text = "Add Node"
+items = [ "Dialogue Node", null, 0, false, false, 0, 0, null, "", false, "Dyanmic Node", null, 0, false, false, 1, 0, null, "", false, "Choice Node", null, 0, false, false, 2, 0, null, "", false ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DialogueTree" type="GraphEdit" parent="VSplitContainer"]
+margin_top = 30.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="connection_request" from="VSplitContainer/DialogueTree" to="VSplitContainer/DialogueTree" method="_on_DialogueTree_connection_request"]
+[connection signal="connection_to_empty" from="VSplitContainer/DialogueTree" to="VSplitContainer/DialogueTree" method="_on_DialogueTree_connection_to_empty"]

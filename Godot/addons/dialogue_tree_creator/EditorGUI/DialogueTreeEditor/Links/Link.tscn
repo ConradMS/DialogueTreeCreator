@@ -48,3 +48,4 @@ margin_right = 1024.0
 margin_bottom = 26.0
 
 [connection signal="pressed" from="RemoveLink" to="." method="_on_RemoveLink_pressed"]
+[connection signal="value_changed" from="SpinBox" to="." method="_on_SpinBox_value_changed"]

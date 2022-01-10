@@ -17,13 +17,6 @@ func _ready():
 		title += "null"
 	else:
 		title += String(id)
-	
-	
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
 
 func update_recent_char_searches(searches : PoolStringArray):
 	popupMenu._build_recents(searches)

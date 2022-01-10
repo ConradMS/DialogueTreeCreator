@@ -18,16 +18,28 @@ _global_script_classes=[ {
 "class": "GraphDialogueNode",
 "language": "GDScript",
 "path": "res://DialogueGraphNode.gd"
+}, {
+"base": "Control",
+"class": "Link",
+"language": "GDScript",
+"path": "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/Links/Link.gd"
+}, {
+"base": "GraphNode",
+"class": "TreeNode",
+"language": "GDScript",
+"path": "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/TreeNode.gd"
 } ]
 _global_script_class_icons={
 "DialogueNode": "",
-"GraphDialogueNode": ""
+"GraphDialogueNode": "",
+"Link": "",
+"TreeNode": ""
 }
 
 [application]
 
 config/name="DialogueTreeCreator"
-run/main_scene="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueNode.tscn"
+run/main_scene="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueTreeControl.tscn"
 config/icon="res://icon.png"
 
 [input]

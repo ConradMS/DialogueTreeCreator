@@ -3,7 +3,7 @@ extends EditorPlugin
 
 
 #var dock = preload("res://addons/dialogue_tree_creator/EditorGUI/MainScreen/PopupMenu.tscn").instance()
-const mainPanel = preload("res://addons/dialogue_tree_creator/EditorGUI/MainScreen/MainGraphEditMenu.tscn")
+const mainPanel = preload("res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueTreeControl.tscn")
 const SCREEN_NAME = "Dialogue Tree Creator"
 
 var main_panel_instance

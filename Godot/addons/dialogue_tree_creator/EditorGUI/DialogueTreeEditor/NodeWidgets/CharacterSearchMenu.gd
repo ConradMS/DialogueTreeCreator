@@ -6,10 +6,10 @@ onready var charLabel = $CharLabel
 
 
 func _ready():
-	var status = charLabel.connect("add_recent", popupMenu, "add_recent")
-	
-	if status != OK:
-		printerr("CharacterSearchMenu.gd, Line 13, Error: ", status)
+	pass
+#	var status = charLabel.connect("add_recent", popupMenu, "add_recent")
+#	if status != OK:
+#		printerr("CharacterSearchMenu.gd, Line 13, Error: ", status)
 
 
 func _on_PopupButton_pressed():
@@ -26,3 +26,7 @@ func _on_PopupButton_pressed():
 	ui_right.action = "ui_right"
 	ui_right.pressed = true
 	Input.parse_input_event(ui_right)
+
+
+func sync_recents(recents : PoolStringArray):
+	popupMenu._build_recents(recents)

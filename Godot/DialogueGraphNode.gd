@@ -166,3 +166,6 @@ func sync_recent_searches(recents : PoolStringArray):
 func ping_recents(recent):
 	emit_signal("sync_recents", recent)
 	
+
+func save_as_string() -> String:
+	return ""

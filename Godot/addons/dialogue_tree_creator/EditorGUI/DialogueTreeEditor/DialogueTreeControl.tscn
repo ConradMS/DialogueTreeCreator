@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueTree.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueTreeControl.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/UIComponents/WarningMessage.tscn" type="PackedScene" id=3]
 
 [node name="DialogueTreeControl" type="Control"]
 anchor_right = 1.0
@@ -68,6 +69,11 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="WarningMessage" parent="." instance=ExtResource( 3 )]
+margin_top = 30.0
+margin_right = 107.0
+margin_bottom = 70.0
 
 [connection signal="connection_request" from="VSplitContainer/DialogueTree" to="VSplitContainer/DialogueTree" method="_on_DialogueTree_connection_request"]
 [connection signal="connection_to_empty" from="VSplitContainer/DialogueTree" to="VSplitContainer/DialogueTree" method="_on_DialogueTree_connection_to_empty"]

@@ -45,3 +45,7 @@ func _on_ConditionList_focus_exited():
 	for item in selectedItem:
 		var condition : String = conditionsList.get_item_text(item)
 		conditions.append(condition)
+
+
+func save_as_string() -> String:
+	return ""

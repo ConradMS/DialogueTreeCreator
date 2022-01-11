@@ -20,6 +20,7 @@ const MAX_RECENTS = 5
 const FIRST_SLOT = 0
 const ROOT = 0
 
+signal warn(warning)
 
 func add_recent(recent : String):
 	recentSearches.insert(0, recent)
@@ -110,7 +111,7 @@ func is_root_node(node : TreeNode):
 func remove_node(id):
 	var node_to_remove : TreeNode = nodes[id]
 	if is_root_node(node_to_remove):
-		print("Cannot Delete Root!")
+		emit_signal("warn", "Cannot Delete Root!")
 		return
 	
 	disconnect_all_connections(node_to_remove.name)
@@ -149,3 +150,6 @@ func remove_link_info(from : String, from_slot):
 	var from_link : Link = from_node.links[from_slot]
 	from_link.linked_id = -1
 	
+
+func save_as_string() -> String:
+	return ""

@@ -1,12 +1,10 @@
 extends GraphNode
 class_name TreeNode
 
-var id : int
+var id : int = -1
 var links : Dictionary = {}
 
 signal remove_node(id)
-
-
 
 func init(id_i : int):
 	id = id_i
@@ -30,3 +28,21 @@ func editing_children() -> bool:
 			if child.has_focus():
 				editing = true
 	return editing 
+
+
+func get_var_dict():
+	var vars : Dictionary = {}
+	vars[DialogueTreeVariableNames.TREE_NODE_VARS.ID] = id
+	vars[DialogueTreeVariableNames.TREE_NODE_VARS.LINKS] = {}
+	for link_i in links.values():
+		if link_i is Link:
+			var key = link_i.id
+			vars[DialogueTreeVariableNames.TREE_NODE_VARS.LINKS][key] = link_i.get_var_dict()
+		else:
+			printerr("Object not of type Link in links")
+
+	return vars
+	
+
+func toJSON() -> String:
+	return to_json(get_var_dict())

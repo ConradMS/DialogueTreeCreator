@@ -1,7 +1,7 @@
 extends "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/TreeNode.gd"
 class_name GraphDialogueNode
 
-onready var dialogueLinesBox = $Lines
+onready var dialogueLinesBox : TextEdit = $Lines
 onready var characterNameBox = $CharacterSearchBar/CharLabel
 onready var characterSearchBar = $CharacterSearchBar
 onready var expressionList = $ExpressionList
@@ -39,7 +39,7 @@ func _ready():
 	if status != OK:
 		printerr("DialogueGraphNode Line 29, Error: ", status)
 		
-	var status_2 = connect("focus_exited", self, "_update_lines")
+	var status_2 = dialogueLinesBox.connect("text_changed", self, "_update_lines")
 	if status_2 != OK:
 		printerr("DialogueGraphNode Line 33, Error: ", status_2)
 	
@@ -55,6 +55,7 @@ func _ready():
 	characterNameBox.connect("add_recent", self, "ping_recents")
 	
 	_add_link()
+
 
 func _update_lines():
 	if dialogueLinesBox.text != dialogueLinesBox.DEFAULT_TEXT:
@@ -167,5 +168,11 @@ func ping_recents(recent):
 	emit_signal("sync_recents", recent)
 	
 
-func save_as_string() -> String:
-	return ""
+func get_var_dict():
+	var var_dict = .get_var_dict()
+	print(lines, char_name, expr)
+	var_dict[DialogueTreeVariableNames.DIALOGUE_NODE_VARS.LINES] = lines
+	var_dict[DialogueTreeVariableNames.DIALOGUE_NODE_VARS.CHARACTER] = char_name
+	var_dict[DialogueTreeVariableNames.DIALOGUE_NODE_VARS.EXPRESSION] = expr
+	
+	return var_dict

@@ -1,16 +1,31 @@
 extends Node
 
+const TREE_NODE_VARS : Dictionary = {
+	ID = "id: ",
+	LINKS = "links: "
+}
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+const DIALOGUE_NODE_VARS : Dictionary = {
+	LINES = "lines: ",
+	CHARACTER = "char_name: ",
+	EXPRESSION = "expression: ",
+}
 
+const DYANIMC_NODE_VARS : Dictionary = {
+	SCRIPTS = "scritps: ",
+	THEME = "theme: "
+}
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+const CHOICE_NODE_VARS : Dictionary = {
+	
+}
 
+const LINK_VARS : Dictionary = {
+	LINKED_ID = "linked_id: ",
+	PRIORITY = "priority: ",
+	CONDITIONS = "conditions: "
+}
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+const CHOICE_LINK_VARS : Dictionary = {
+	
+}

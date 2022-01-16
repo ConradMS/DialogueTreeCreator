@@ -151,5 +151,9 @@ func remove_link_info(from : String, from_slot):
 	from_link.linked_id = -1
 	
 
-func save_as_string() -> String:
+func export_dialogue_tree() -> String:
+	for node in nodes.values():
+		if node is TreeNode:
+			print(node.toJSON())
+	
 	return ""

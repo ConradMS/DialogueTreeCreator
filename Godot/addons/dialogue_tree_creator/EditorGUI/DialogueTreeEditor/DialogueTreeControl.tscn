@@ -39,7 +39,7 @@ __meta__ = {
 margin_right = 35.0
 margin_bottom = 30.0
 text = "File"
-items = [ "Save", null, 0, false, false, 0, 0, null, "", false ]
+items = [ "save", null, 0, false, false, 0, 0, null, "", false ]
 
 [node name="AddnodeMenu" type="MenuButton" parent="VSplitContainer/OptionsBar/HBoxContainer"]
 margin_left = 39.0

@@ -47,5 +47,17 @@ func _on_ConditionList_focus_exited():
 		conditions.append(condition)
 
 
-func save_as_string() -> String:
-	return ""
+func get_var_dict() -> Dictionary:
+	var vars : Dictionary = {}
+	vars[DialogueTreeVariableNames.LINK_VARS.LINKED_ID] = linked_id
+	vars[DialogueTreeVariableNames.LINK_VARS.PRIORITY] = priority
+	vars[DialogueTreeVariableNames.LINK_VARS.CONDITIONS] = conditions
+	return vars
+
+
+func toJSON() -> String:
+	var vars : Dictionary = {}
+	vars[DialogueTreeVariableNames.LINK_VARS.LINKED_ID] = linked_id
+	vars[DialogueTreeVariableNames.LINK_VARS.PRIORITY] = priority
+	vars[DialogueTreeVariableNames.LINK_VARS.CONDITIONS] = conditions
+	return to_json(vars)

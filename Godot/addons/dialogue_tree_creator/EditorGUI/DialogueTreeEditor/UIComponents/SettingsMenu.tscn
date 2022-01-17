@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/UIComponents/PathSelector.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/UIComponents/SettingsMenuButton.gd" type="Script" id=3]
+
+[node name="MenuButton" type="MenuButton"]
+margin_right = 12.0
+margin_bottom = 20.0
+text = "Settings"
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PathSelector" type="FileDialog" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 353.0
+margin_bottom = 164.0
+rect_min_size = Vector2( 400, 140 )
+window_title = "Open a File or Directory"
+mode = 3
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="file_selected" from="PathSelector" to="." method="_on_PathSelector_file_selected"]

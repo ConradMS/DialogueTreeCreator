@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueTree.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueTreeControl.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/UIComponents/WarningMessage.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/UIComponents/SettingsMenu.tscn" type="PackedScene" id=4]
 
 [node name="DialogueTreeControl" type="Control"]
 anchor_right = 1.0
@@ -52,12 +53,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SettingsMenu" type="MenuButton" parent="VSplitContainer/OptionsBar/HBoxContainer"]
+[node name="SettingsMenu2" parent="VSplitContainer/OptionsBar/HBoxContainer" instance=ExtResource( 4 )]
 margin_left = 118.0
 margin_right = 181.0
 margin_bottom = 30.0
-text = "Settings"
-items = [ "Configure", null, 0, false, false, 0, 0, null, "", false ]
 
 [node name="DialogueTree" type="GraphEdit" parent="VSplitContainer"]
 margin_top = 30.0

@@ -170,7 +170,6 @@ func ping_recents(recent):
 
 func get_var_dict():
 	var var_dict = .get_var_dict()
-	print(lines, char_name, expr)
 	var_dict[DialogueTreeVariableNames.DIALOGUE_NODE_VARS.LINES] = lines
 	var_dict[DialogueTreeVariableNames.DIALOGUE_NODE_VARS.CHARACTER] = char_name
 	var_dict[DialogueTreeVariableNames.DIALOGUE_NODE_VARS.EXPRESSION] = expr

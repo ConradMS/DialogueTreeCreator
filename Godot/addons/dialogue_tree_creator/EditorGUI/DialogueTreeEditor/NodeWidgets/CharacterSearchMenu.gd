@@ -1,16 +1,22 @@
 extends Control
 
 onready var popupMenu = $PopupButton/PopupMenu
+onready var recents = $PopupButton/PopupMenu/Recents
 onready var button = $PopupButton
 onready var charLabel = $CharLabel
 
+const HEADER_DELIM = "#"
+const CHARACTER_DELIM = ","
+
+const NO_HEADER_YET = "null"
+const ID = 0
+const NAME = 1
+
+var depth = 1
 
 func _ready():
-	pass
-#	var status = charLabel.connect("add_recent", popupMenu, "add_recent")
-#	if status != OK:
-#		printerr("CharacterSearchMenu.gd, Line 13, Error: ", status)
-
+	popupMenu.connect("index_pressed", self, "suggestions_menu_pressed", [popupMenu])
+	recents.connect("index_pressed", self, "suggestions_menu_pressed", [recents])
 
 func _on_PopupButton_pressed():
 	popupMenu.popup()
@@ -30,3 +36,82 @@ func _on_PopupButton_pressed():
 
 func sync_recents(recents : PoolStringArray):
 	popupMenu._build_recents(recents)
+
+
+func suggestions_menu_pressed(index : int, menu : PopupMenu):
+	var option : String = menu.get_item_text(index)
+	charLabel.change_text_from_suggestions(option)
+# Assumed that the file_path has already been checked to be valid
+# Valid type: .txt and .JSON
+# format is # For a header and each line after is char id , name
+func build_suggestions_tab(file_path : String):
+	var file = File.new()
+	
+	if !file.file_exists(file_path):
+		printerr("No such file to build suggestions tab: ", file_path)
+		return
+	
+	file.open(file_path, file.READ)
+	if file.eof_reached():
+		printerr("empty file to build suggestions tab: ", file_path)
+		return
+	
+	var first_line = file.get_line().trim_prefix(" ")
+	if first_line[0] != HEADER_DELIM:
+		printerr("Character database must start with a header")
+		return
+	
+	var current_submenu : PopupMenu = _make_characters_submenu(first_line.lstrip(HEADER_DELIM).dedent(), popupMenu)
+	while !file.eof_reached(): 
+		var next_line : String = file.get_line()
+		next_line.trim_prefix(" ")
+		
+		if next_line.length() > 0:
+			if next_line[0] == HEADER_DELIM:
+				var parent_popup = _get_parent_popup(next_line, current_submenu)
+				current_submenu = _make_characters_submenu(next_line.lstrip(HEADER_DELIM).dedent(), parent_popup)
+			else:
+				# Split into two sections, the first is id, second is name
+				# For now dont do anything with id
+				var char_info : PoolStringArray = next_line.split(CHARACTER_DELIM, true, 2)
+				current_submenu.add_item(char_info[NAME])
+				# Use this later probably:
+	#			current_submenu.set_item_id()
+			
+
+# Return the Current menu
+func _make_characters_submenu(menu_name : String, parentPopup : PopupMenu) -> PopupMenu:
+	var new_submenu = PopupMenu.new()
+	new_submenu.connect("index_pressed", self, "suggestions_menu_pressed", [new_submenu])
+	parentPopup.add_child(new_submenu)
+	parentPopup.add_submenu_item(menu_name, new_submenu.name)
+	
+	return new_submenu
+
+
+func _get_parent_popup(next_line : String, child : PopupMenu) -> PopupMenu:
+	var count = 0
+	var index = 0
+	while index < next_line.length() and next_line[index] == HEADER_DELIM:
+		count += 1
+		index += 1
+
+	if count > depth:
+		if count == depth + 1:
+			depth += 1
+			return child
+		else:
+			printerr("Formatting error in character database")
+			return null
+	else:
+		var parent = child.get_parent()
+		depth -= 1
+		while depth > count - depth:
+			if !(parent is PopupMenu):
+				printerr("Parent menu is not popupmenu for some reason")
+				return null
+			depth -= 1
+			parent = parent.get_parent()
+
+		depth += 1
+		return parent 

@@ -1,0 +1,21 @@
+#Main Characters
+0,Conrad
+1,Devan
+2,Shehzaad
+3,Michelle
+4,Henri
+5,Tomas
+6,Riyan
+# Chapter 0 
+7,Johnathan Calver
+8,Alessandro
+## Side Characters
+10, Misha
+11, Syed
+12, Kevin
+### Sexy Side Characters
+13, Mateo and the shorties
+## Heres another category
+14, Gordon Ramsay
+# Chapter 1
+9,Big Shizzy

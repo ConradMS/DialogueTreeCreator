@@ -34,7 +34,7 @@ func create_title():
 
 func _ready():
 	create_title()
-	
+	characterSearchBar.build_suggestions_tab("res://addons/dialogue_tree_creator/Databases/default_characters.txt")
 	var status = connect("resize_request", self, "_resize")
 	if status != OK:
 		printerr("DialogueGraphNode Line 29, Error: ", status)

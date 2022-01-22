@@ -64,6 +64,7 @@ margin_left = 16.0
 margin_top = 111.0
 margin_right = 323.0
 margin_bottom = 131.0
+selected = -1
 
 [node name="AddLink" parent="." instance=ExtResource( 5 )]
 margin_left = 16.0

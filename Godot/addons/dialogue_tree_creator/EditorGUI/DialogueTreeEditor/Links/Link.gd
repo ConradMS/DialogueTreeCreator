@@ -9,13 +9,16 @@ var conditions : PoolStringArray
 var id : int
 
 onready var priorityBox : SpinBox = $SpinBox
-onready var conditionsList : ItemList = $PopupConditionList/ConditionList
+onready var selectorRoot = $ConditionSelectorRoot
 
 signal remove_link(id)
 signal change_priority(old, new, link)
 
 func init(id_i : int):
 	id = id_i
+
+func _ready():
+	selectorRoot.connect("selection_made", self, "_update_conditions")
 
 func _on_RemoveLink_pressed():
 	emit_signal("remove_link", id)
@@ -39,12 +42,8 @@ func _on_ConditionList_multi_selected(index, selected):
 	print(index, " ", selected)
 
 
-func _on_ConditionList_focus_exited():
-	var selectedItem : PoolIntArray = conditionsList.get_selected_items()
-	conditions.empty()
-	for item in selectedItem:
-		var condition : String = conditionsList.get_item_text(item)
-		conditions.append(condition)
+func _update_conditions():
+	conditions = selectorRoot.get_selected()
 
 
 func get_var_dict() -> Dictionary:

@@ -33,5 +33,6 @@ func _on_CharLabel_focus_exited():
 
 func change_text_from_suggestions(text_i : String):
 	text = text_i
+	emit_signal("text_changed")
 	emit_signal("add_recent", text_i)
 	set(FONT_COLOUR, WHITE)

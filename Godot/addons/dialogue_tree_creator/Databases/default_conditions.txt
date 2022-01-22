@@ -1,0 +1,14 @@
+#Chapter 0
+calver_has_been_seduced
+group_formed
+devan_aquired
+#Chapter 1
+test1
+test2
+*## Bahen bathroom flags
+##Lets see what this does
+button pressed
+found key
+big shizzy defeated
+#Chapter 2
+Test

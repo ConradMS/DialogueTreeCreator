@@ -1,15 +1,11 @@
 extends OptionButton
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-func _build_expression_list():
-	pass
+func build_expression_list(file_path : String):
+	var file = File.new()
+	file.open(file_path, file.READ)
+	
+	var next_line = ""
+	while !file.eof_reached():
+		next_line = file.get_line()
+		if next_line.length() > 0:
+			add_item(next_line)

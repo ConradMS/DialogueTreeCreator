@@ -35,6 +35,7 @@ func create_title():
 func _ready():
 	create_title()
 	characterSearchBar.build_suggestions_tab("res://addons/dialogue_tree_creator/Databases/default_characters.txt")
+	expressionList.build_expression_list("res://addons/dialogue_tree_creator/Databases/default_expressions.txt")
 	var status = connect("resize_request", self, "_resize")
 	if status != OK:
 		printerr("DialogueGraphNode Line 29, Error: ", status)
@@ -42,13 +43,8 @@ func _ready():
 	var status_2 = dialogueLinesBox.connect("text_changed", self, "_update_lines")
 	if status_2 != OK:
 		printerr("DialogueGraphNode Line 33, Error: ", status_2)
-	
-	# CHANGE THIS when autocomplete from a list is added
-	#
-	#
-	#
-	#
-	var status_3 = connect("focus_exited", self, "_update_character_name")
+		
+	var status_3 = 	characterNameBox.connect("text_changed", self, "_update_character_name")
 	if status_3 != OK:
 		printerr("DialogueGraphNode Line 38, Error: ", status_3)
 	
@@ -64,7 +60,7 @@ func _update_lines():
 		
 func _update_character_name():
 	if characterNameBox.text != characterNameBox.DEFAULT_TEXT:
-		char_name = characterNameBox.DEFAULT_TEXT
+		char_name = characterNameBox.text
 
 
 func _resize(new_size = Vector2(0, 0)):
@@ -173,5 +169,6 @@ func get_var_dict():
 	var_dict[DialogueTreeVariableNames.DIALOGUE_NODE_VARS.LINES] = lines
 	var_dict[DialogueTreeVariableNames.DIALOGUE_NODE_VARS.CHARACTER] = char_name
 	var_dict[DialogueTreeVariableNames.DIALOGUE_NODE_VARS.EXPRESSION] = expr
+	print(lines, char_name, expr)
 	
 	return var_dict

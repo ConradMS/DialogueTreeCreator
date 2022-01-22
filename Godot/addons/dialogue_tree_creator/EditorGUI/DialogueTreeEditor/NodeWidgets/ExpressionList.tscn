@@ -6,7 +6,6 @@
 margin_right = 29.0
 margin_bottom = 20.0
 text = "Test 1"
-items = [ "Test 1", null, false, 0, null, "Test 2", null, false, 1, null ]
 selected = 0
 script = ExtResource( 1 )
 __meta__ = {

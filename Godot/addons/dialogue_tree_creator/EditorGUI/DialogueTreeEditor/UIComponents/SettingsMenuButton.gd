@@ -1,4 +1,4 @@
-extends MenuButton
+extends "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/Tabscript.gd"
 
 const config_option = "Configure Paths"
 const configureable_paths := {

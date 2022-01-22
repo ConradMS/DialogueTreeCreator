@@ -1,4 +1,4 @@
-extends "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/Tabscript.gd"
+extends MenuButton
 
 const config_option = "Configure Paths"
 const configureable_paths := {
@@ -16,6 +16,7 @@ var paths = {
 	configureable_paths.NODE_SCRIPTS: "no path",
 	configureable_paths.THEMES: "no path",
 }
+
 var configSubmenu = PopupMenu.new()
 var path_to_edit = "none"
 

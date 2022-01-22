@@ -4,7 +4,7 @@
 [ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueTreeControl.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/UIComponents/WarningMessage.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/UIComponents/SettingsMenu.tscn" type="PackedScene" id=4]
-[ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/Tabscript.gd" type="Script" id=5]
+[ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/MenuTabs.gd" type="Script" id=6]
 
 [node name="DialogueTreeControl" type="Control"]
 anchor_right = 1.0
@@ -33,6 +33,7 @@ anchor_right = 1.0
 anchor_bottom = 0.806
 margin_bottom = 5.82
 size_flags_horizontal = 3
+script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -42,7 +43,6 @@ margin_right = 35.0
 margin_bottom = 30.0
 text = "File"
 items = [ "save", null, 0, false, false, 0, 0, null, "", false ]
-script = ExtResource( 5 )
 
 [node name="AddnodeMenu" type="MenuButton" parent="VSplitContainer/OptionsBar/HBoxContainer"]
 margin_left = 39.0
@@ -51,7 +51,6 @@ margin_bottom = 30.0
 rect_min_size = Vector2( 75, 30 )
 text = "Add Node"
 items = [ "Dialogue Node", null, 0, false, false, 0, 0, null, "", false, "Dyanmic Node", null, 0, false, false, 1, 0, null, "", false, "Choice Node", null, 0, false, false, 2, 0, null, "", false ]
-script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

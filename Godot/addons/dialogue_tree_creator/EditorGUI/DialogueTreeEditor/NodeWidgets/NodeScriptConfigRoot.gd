@@ -18,7 +18,8 @@ const method_parts = {
 	DESCRIPTION = "description",
 	HEADER = "header",
 	ARGS = "args",
-	RETURN_TYPE = "return_type" 
+	RETURN_TYPE = "return_type",
+	NAME = "name"
 }
 
 const NAME = 0
@@ -53,14 +54,14 @@ func _on_SearchPath_pressed():
 
 func get_method_details(source_code : String):
 	var function_regex = RegEx.new()
-	function_regex.compile("(\"\"\"(?<description>(\n.*)?)\n+\"\"\"\n)?func +(?<header>[A-z_]+[A-z0-9_]+\\((?<args>.*)\\)) *(->)? *(?<return_type>.*):")
+	function_regex.compile("(\"\"\"(?<description>(\n.*)?)\n+\"\"\"\n)?func +(?<header>(?<name>[A-z_]+[A-z0-9_]+)\\((?<args>.*)\\)) *(->)? *(?<return_type>.*):")
 	var result : Array = function_regex.search_all(source_code)
 	# Methods are stored in an array, holds, header: retrun type name(args), args: Dict from arg name to type, description of function
 	var methods : Array 
 	
 	for res in result:
 		var method_dict : Dictionary = {}
-		method_dict[method_parts.DESCRIPTION] = res.get_string(method_parts.DESCRIPTION)
+		method_dict[method_parts.DESCRIPTION] = res.get_string(method_parts.DESCRIPTION).strip_escapes()
 		var return_type_string = res.get_string(method_parts.RETURN_TYPE)
 		
 		if return_type_string.length() > 0:
@@ -69,6 +70,7 @@ func get_method_details(source_code : String):
 			method_dict[method_parts.HEADER] = res.get_string(method_parts.HEADER)
 		
 		method_dict[method_parts.ARGS] = get_args_to_type(res.get_string(method_parts.ARGS))
+		method_dict[method_parts.NAME] = res.get_string(method_parts.NAME)
 		
 		methods.append(method_dict)
 	

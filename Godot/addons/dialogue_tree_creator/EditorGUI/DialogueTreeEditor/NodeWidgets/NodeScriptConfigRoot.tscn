@@ -55,6 +55,7 @@ margin_bottom = 370.0
 rect_min_size = Vector2( 400, 140 )
 window_title = "Select Method"
 resizable = true
+dialog_hide_on_ok = false
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_group_": true,
@@ -112,10 +113,20 @@ margin_top = 256.0
 margin_right = 403.0
 margin_bottom = 326.0
 rect_min_size = Vector2( 0, 70 )
-selecting_enabled = false
+readonly = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [connection signal="pressed" from="HBoxContainer/SetPath" to="." method="_on_SetPath_pressed"]
 [connection signal="pressed" from="HBoxContainer/SearchPath" to="." method="_on_SearchPath_pressed"]
 [connection signal="file_selected" from="PathSearcher" to="." method="_on_PathSearcher_file_selected"]
+[connection signal="confirmed" from="MethodSelector" to="MethodSelector" method="_on_MethodSelector_confirmed"]
+[connection signal="visibility_changed" from="MethodSelector" to="MethodSelector" method="_on_MethodSelector_visibility_changed"]
+[connection signal="text_changed" from="MethodSelector/VBoxContainer/SearchBar" to="MethodSelector" method="_on_SearchBar_text_changed"]
 [connection signal="item_activated" from="MethodSelector/VBoxContainer/Matches" to="MethodSelector" method="_on_Matches_item_activated"]
 [connection signal="item_selected" from="MethodSelector/VBoxContainer/Matches" to="MethodSelector" method="_on_Matches_item_selected"]

@@ -1,6 +1,7 @@
 extends HBoxContainer
 
 onready var curr_open : MenuButton = null
+const MENU_BUFFER = 50
 
 func switch_option(pos : Vector2):
 	var menu_option = find_option(pos)
@@ -10,9 +11,13 @@ func switch_option(pos : Vector2):
 	
 	if curr_open != null and curr_open is MenuButton:
 		curr_open.get_popup().visible = false
-		
-	curr_open = menu_option
-	popup_in_position(menu_option)
+	
+	if curr_open != menu_option:
+		curr_open = menu_option
+		popup_in_position(menu_option)
+	else:
+		curr_open.get_popup().visible = false
+
 
 func find_option(pos : Vector2) -> MenuButton:
 	for child in get_children():
@@ -54,7 +59,7 @@ func get_maxpopup_bounds(popup : PopupMenu) -> Vector2:
 
 
 func check_autoclose(pos : Vector2):
-	if pos.y > get_maxpopup_bounds(curr_open.get_popup()).y + 50:
+	if pos.y > get_maxpopup_bounds(curr_open.get_popup()).y + MENU_BUFFER:
 		curr_open.get_popup().visible = false
 
 

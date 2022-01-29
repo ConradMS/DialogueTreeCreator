@@ -52,11 +52,3 @@ func get_var_dict() -> Dictionary:
 	vars[DialogueTreeVariableNames.LINK_VARS.PRIORITY] = priority
 	vars[DialogueTreeVariableNames.LINK_VARS.CONDITIONS] = conditions
 	return vars
-
-
-func toJSON() -> String:
-	var vars : Dictionary = {}
-	vars[DialogueTreeVariableNames.LINK_VARS.LINKED_ID] = linked_id
-	vars[DialogueTreeVariableNames.LINK_VARS.PRIORITY] = priority
-	vars[DialogueTreeVariableNames.LINK_VARS.CONDITIONS] = conditions
-	return to_json(vars)

@@ -10,9 +10,10 @@ const NODE_TYPES = {
 
 const NODE_REFERENCES = {
 	NODE_TYPES.DIALOGUE_NODE: preload("res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueNode.tscn"),
-	NODE_TYPES.DYNAMIC_NODE: preload("res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueNode.tscn"),
-	NODE_TYPES.CHOICE_NODE: preload("res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueNode.tscn")
+	NODE_TYPES.DYNAMIC_NODE: preload("res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DynamNode.tscn"),
+	NODE_TYPES.CHOICE_NODE: preload("res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/ChoiceNode.tscn")
 }
+
 var nodes : Dictionary = {}
 var recentSearches : PoolStringArray
 const MAX_RECENTS = 5
@@ -71,7 +72,6 @@ func get_node_by_name(node_name : String) -> TreeNode:
 
 
 func _on_DialogueTree_connection_to_empty(from, from_slot, release_position):
-	# For now create a dialouge node, change later
 	var added_node_id : int = add_node(0)
 	var added_node : GraphNode = nodes.get(added_node_id)
 	

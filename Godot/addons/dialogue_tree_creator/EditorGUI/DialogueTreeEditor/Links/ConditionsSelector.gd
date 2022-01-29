@@ -110,3 +110,7 @@ func _on_TextureButton_pressed():
 	popup.popup()
 	popup.rect_position = get_global_mouse_position()
 	popup.rect_position.x += textureButton.rect_size.x * 1.5
+
+
+func _on_ConditionSelectorRoot_resized():
+	textureButton.rect_size.y = rect_size.y

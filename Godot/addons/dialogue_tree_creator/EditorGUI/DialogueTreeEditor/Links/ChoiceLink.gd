@@ -1,15 +1,14 @@
-extends Control
+extends "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/Links/Link.gd"
+
+onready var textbox = $ChoiceLinkText
+var link_text : String = ""
 
 
-var linked_id : int 
-var link_hint : String
-var conditions : PoolStringArray
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+func _on_ChoiceLinkText_text_changed():
+	link_text = textbox.text
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func get_var_dict() -> Dictionary:
+	var var_dict = .get_var_dict()
+	var_dict[DialogueTreeVariableNames.CHOICE_LINK_VARS.CHOICE_TEXT] = link_text
+	return var_dict

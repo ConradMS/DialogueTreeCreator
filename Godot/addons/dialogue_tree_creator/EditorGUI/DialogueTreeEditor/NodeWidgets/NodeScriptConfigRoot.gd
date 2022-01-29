@@ -42,6 +42,8 @@ const GD_extension = ".gd"
 
 onready var path_selector = $PathSearcher
 
+signal min_size_change()
+
 func _ready():
 	load_methods_from_path()
 	set_minimum_size()
@@ -151,9 +153,10 @@ func _on_MethodSelector_method_selected(method : Dictionary):
 		param_location.add_child(node_param)
 		
 	set_minimum_size()
+	emit_signal("min_size_change")
 
 
-func export_method_details() -> String:
+func export_method_details() -> Dictionary:
 	var selected_method = method_selector.selected_method
 	
 	var method_dict = {}
@@ -171,7 +174,7 @@ func export_method_details() -> String:
 	else:
 		printerr("saving empty method call")
 	
-	return to_json(method_dict)
+	return method_dict
 
 
 func _on_MinusButton_pressed():

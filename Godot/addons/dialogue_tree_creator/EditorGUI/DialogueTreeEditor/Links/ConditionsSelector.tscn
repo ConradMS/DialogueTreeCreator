@@ -20,11 +20,14 @@ margin_bottom = 40.0
 [node name="TextureButton" type="TextureButton" parent="."]
 margin_right = 27.0
 margin_bottom = 27.0
+rect_min_size = Vector2( 0, 27 )
 texture_normal = ExtResource( 2 )
 expand = true
+stretch_mode = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[connection signal="resized" from="." to="." method="_on_ConditionSelectorRoot_resized"]
 [connection signal="id_pressed" from="ConditionsSelector" to="." method="_on_ConditionsSelector_id_pressed"]
 [connection signal="pressed" from="TextureButton" to="." method="_on_TextureButton_pressed"]

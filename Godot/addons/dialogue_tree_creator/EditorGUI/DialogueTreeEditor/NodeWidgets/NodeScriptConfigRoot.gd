@@ -1,7 +1,10 @@
 extends Control
-
+class_name NodeMethodConfig
 
 const default_path : String = "res://addons/dialogue_tree_creator/Databases/default_scripts.gd"
+onready var param_location = $VBoxContainer/Params
+onready var method_selector = $MethodSelector
+onready var base_components = $VBoxContainer/HBoxContainer
 const UNKNOWN = "variant"
 const plain_text_to_type : Dictionary = {
 	"int": TYPE_INT,
@@ -22,6 +25,16 @@ const method_parts = {
 	NAME = "name"
 }
 
+const param_referecnes = {
+	TYPE_INT: "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/NodeWidgets/NodeParams/IntParam.tscn",
+	TYPE_REAL: "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/NodeWidgets/NodeParams/FloatParam.tscn",
+	TYPE_STRING: "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/NodeWidgets/NodeParams/StringParam.tscn",
+	TYPE_ARRAY: "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/NodeWidgets/NodeParams/ArrayParam.tscn",
+	TYPE_BOOL: "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/NodeWidgets/NodeParams/BoolParam.tscn",
+	TYPE_VECTOR2: "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/NodeWidgets/NodeParams/Vector2Param.tscn",
+	TYPE_COLOR: "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/NodeWidgets/NodeParams/ColorParam.tscn"
+}
+
 const NAME = 0
 const TYPE = 1
 var scripts_path : String = default_path
@@ -30,26 +43,29 @@ const GD_extension = ".gd"
 onready var path_selector = $PathSearcher
 
 func _ready():
-	get_args_to_type("test : int , test2 : bool, test3 : String")
+	load_methods_from_path()
+	set_minimum_size()
 
-
-func _input(event):
-	if event.is_action_pressed("ui_down"):
-		$MethodSelector.popup()
 
 func _on_SetPath_pressed():
 	path_selector.popup()
 
 
 func _on_SearchPath_pressed():
-	if !scripts_path.ends_with(GD_extension):
-		printerr("Node script path incorrectly set to non-gd script file")
-		scripts_path = default_path
+	method_selector.popup()
 	
-	var script : GDScript = load(scripts_path)
+
+func set_minimum_size():
+	var min_size = Vector2(0, 0)
+	for child in base_components.get_children():
+		if child.rect_size.y > min_size.y:
+			min_size.y = child.rect_size.y
 	
-	$MethodSelector.update_methods(get_method_details(script.source_code))
+	for child in param_location.get_children():
+		if child is NodeScriptParam:
+			min_size.y += child.get_minimum_size().y
 	
+	rect_min_size = Vector2(rect_size.x, min_size.y)
 
 
 func get_method_details(source_code : String):
@@ -109,6 +125,11 @@ func parse_var(arg : String):
 		return [name_and_type[NAME], plain_text_to_type[UNKNOWN]]
 	
 	return [name_and_type[NAME], plain_text_to_type[name_and_type[TYPE]]]
+
+
+func load_methods_from_path():
+	var script : GDScript = load(scripts_path)
+	method_selector.update_methods(get_method_details(script.source_code))
 	
 
 func _on_PathSearcher_file_selected(path : String):
@@ -116,4 +137,42 @@ func _on_PathSearcher_file_selected(path : String):
 		printerr("Node script path must be a gd script file")
 		return
 	scripts_path = path
+	load_methods_from_path()
+
+
+func _on_MethodSelector_method_selected(method : Dictionary):
+	for child in param_location.get_children():
+		child.queue_free()
 	
+	for arg in method[method_parts.ARGS]:
+		var packed_scene : PackedScene = load(param_referecnes[method[method_parts.ARGS][arg]])
+		var node_param : NodeScriptParam = packed_scene.instance()
+		node_param.set_info(arg, method[method_parts.ARGS][arg])
+		param_location.add_child(node_param)
+		
+	set_minimum_size()
+
+
+func export_method_details() -> String:
+	var selected_method = method_selector.selected_method
+	
+	var method_dict = {}
+	var args_values = []
+	if selected_method.size() > 0:
+		method_dict[method_parts.NAME] = selected_method[method_parts.NAME]
+		
+		for child in param_location.get_children():
+			if child is NodeScriptParam:
+				args_values.append(child.string_value)
+			else:
+				printerr("Child of param locations should always be type node script param")
+		
+		method_dict[method_parts.ARGS] = args_values
+	else:
+		printerr("saving empty method call")
+	
+	return to_json(method_dict)
+
+
+func _on_MinusButton_pressed():
+	self.queue_free()

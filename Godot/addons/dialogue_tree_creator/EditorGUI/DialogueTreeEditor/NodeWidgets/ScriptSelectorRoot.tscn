@@ -11,25 +11,31 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ScriptAdder" type="HBoxContainer" parent="."]
-anchor_right = 1.0
-margin_right = -649.0
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScriptAdder" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 140.0
 margin_bottom = 20.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="ScriptAdder"]
+[node name="Label" type="Label" parent="VBoxContainer/ScriptAdder"]
 margin_top = 3.0
-margin_right = 351.0
+margin_right = 116.0
 margin_bottom = 17.0
 size_flags_horizontal = 3
 text = "Add a node script:"
 
-[node name="TextureButton" type="TextureButton" parent="ScriptAdder"]
-margin_left = 355.0
-margin_right = 375.0
+[node name="TextureButton" type="TextureButton" parent="VBoxContainer/ScriptAdder"]
+margin_left = 120.0
+margin_right = 140.0
 margin_bottom = 20.0
 texture_normal = ExtResource( 1 )
 
-[connection signal="pressed" from="ScriptAdder/TextureButton" to="." method="_on_TextureButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/ScriptAdder/TextureButton" to="." method="_on_TextureButton_pressed"]

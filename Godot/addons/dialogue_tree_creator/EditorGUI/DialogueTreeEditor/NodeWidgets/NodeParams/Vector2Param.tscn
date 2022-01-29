@@ -1,0 +1,49 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/NodeWidgets/NodeParams/NodeParamHbox.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/NodeWidgets/NodeParams/Vector2Param.gd" type="Script" id=2]
+
+[node name="Vector2Param" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 0, 50 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NodeParamRoot" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1024.0
+margin_bottom = -600.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ComponentContainer" type="HBoxContainer" parent="NodeParamRoot"]
+margin_right = 331.0
+margin_bottom = 40.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Info" type="Label" parent="NodeParamRoot/ComponentContainer"]
+margin_top = 13.0
+margin_right = 331.0
+margin_bottom = 27.0
+text = "Paramater Name: ParamName    Type: TypeName    "
+
+[node name="X" type="LineEdit" parent="NodeParamRoot/ComponentContainer"]
+margin_left = 335.0
+margin_right = 393.0
+margin_bottom = 40.0
+
+[node name="Y" type="LineEdit" parent="NodeParamRoot/ComponentContainer"]
+margin_left = 397.0
+margin_right = 455.0
+margin_bottom = 40.0
+
+[connection signal="text_changed" from="NodeParamRoot/ComponentContainer/X" to="." method="_on_X_text_changed"]
+[connection signal="text_changed" from="NodeParamRoot/ComponentContainer/Y" to="." method="_on_Y_text_changed"]

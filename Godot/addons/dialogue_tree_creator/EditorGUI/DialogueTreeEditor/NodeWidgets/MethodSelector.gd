@@ -7,6 +7,7 @@ onready var description_box = $VBoxContainer/Description
 onready var search_bar = $VBoxContainer/SearchBar
 const NOT_FOUND = -1
 
+signal method_selected(method)
 # Search will return first method header that contains the given substring 
 
 const method_parts = {
@@ -89,8 +90,10 @@ func _on_MethodSelector_confirmed():
 
 
 func select_index(index : int):
-	selected_method = methods[index]
-	hide()
+	if visible:
+		selected_method = methods[index]
+		emit_signal("method_selected", selected_method)
+		hide()
 
 
 func get_method_by_name(method_name : String) -> Dictionary:

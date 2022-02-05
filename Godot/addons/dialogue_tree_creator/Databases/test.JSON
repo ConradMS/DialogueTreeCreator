@@ -1,0 +1,3 @@
+{"char_name":"Conrad","expression":"happy","id":0,"lines":"Devan is the big man","links":{"0":{"conditions":[],"linked_id":1,"priority":0}},"type":"Dialogue"}
+{"char_name":"Conrad","expression":"happy","id":2,"lines":"Yessir","links":{"0":{"conditions":[],"linked_id":0,"priority":0}},"type":"Dialogue"}
+{"char_name":"Devan","expression":"happy","id":1,"lines":"Conrad is Epic Again!","links":{"0":{"conditions":[],"linked_id":2,"priority":0},"1":{"conditions":[],"linked_id":0,"priority":1}},"type":"Dialogue"}

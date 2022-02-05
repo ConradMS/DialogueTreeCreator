@@ -1,10 +1,9 @@
 extends Control
 
-
-
+const default_path = "res://addons/dialogue_tree_creator/Databases/default_conditions.txt"
 const SECTION_DELIM = "#"
 const SUBMENU_DELIM = "*"
-
+const VALID_FILE_TYPE = ".txt"
 onready var conditions_box_scene = preload("res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/Links/PopupConditionList.tscn")
 onready var popup = $ConditionsSelector
 onready var textureButton = $TextureButton
@@ -14,9 +13,14 @@ signal selection_made()
 var condition_boxes : Dictionary = {}
 var depth = 0
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	build_conditions("res://addons/dialogue_tree_creator/Databases/default_conditions.txt")
+	build_conditions(default_path)
+
+func is_correct_file_type(file_path : String):
+	if file_path.ends_with(VALID_FILE_TYPE):
+		return true
+	return false
+
 
 func build_conditions(file_path : String):
 	var file = File.new()
@@ -24,11 +28,17 @@ func build_conditions(file_path : String):
 		printerr("File not found while trying to build conition list: ", file_path)
 		return 
 	
+	if !(is_correct_file_type(file_path)):
+		printerr("File type not valid, conditions list must be built from a .txt file, provided: ", file_path)
+		return
+	
 	var current_id = popup.get_item_count() - 1
 	file.open(file_path, file.READ)
 	
 	var current_header : PopupMenu = popup
 	var submenu = false
+	
+	reset_submenu()
 	while !file.eof_reached():
 		var next_line = file.get_line()
 		submenu = false
@@ -61,9 +71,18 @@ func build_conditions(file_path : String):
 					item_list.connect("multi_selected", self, "update_conditions")
 					
 					condition_boxes[current_id] = new_conditions_box
-			else:
+			elif condition_boxes.has(current_id):
 				var condition_box : ConditionBox = condition_boxes[current_id]
 				condition_box.add_new_condition(next_line)
+			else:
+				printerr("Incorrectly formatted .txt file to build conditions list")
+
+
+func reset_submenu():
+	for child in popup.get_children():
+		if child is PopupMenu:
+			child.queue_free()
+	popup.clear()
 
 
 func update_header(header : String, current_popup : PopupMenu):

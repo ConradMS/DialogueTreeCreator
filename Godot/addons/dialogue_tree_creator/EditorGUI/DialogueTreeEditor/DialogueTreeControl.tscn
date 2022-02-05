@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueTree.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueTreeControl.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/UIComponents/WarningMessage.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/UIComponents/SettingsMenu.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/FileMenu.gd" type="Script" id=5]
 [ext_resource path="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/MenuTabs.gd" type="Script" id=6]
 
 [node name="DialogueTreeControl" type="Control"]
@@ -42,7 +43,21 @@ __meta__ = {
 margin_right = 35.0
 margin_bottom = 30.0
 text = "File"
-items = [ "save", null, 0, false, false, 0, 0, null, "", false ]
+items = [ "open", null, 0, false, false, 0, 0, null, "", false, "save", null, 0, false, false, 1, 0, null, "", false, "save as", null, 0, false, false, 2, 0, null, "", false ]
+script = ExtResource( 5 )
+
+[node name="SettingsFileDialogue" type="FileDialog" parent="VSplitContainer/OptionsBar/HBoxContainer/FileMenu"]
+margin_right = 416.0
+margin_bottom = 184.0
+rect_min_size = Vector2( 400, 140 )
+resizable = true
+
+[node name="OpenFileDialogue" type="FileDialog" parent="VSplitContainer/OptionsBar/HBoxContainer/FileMenu"]
+margin_right = 416.0
+margin_bottom = 184.0
+rect_min_size = Vector2( 400, 140 )
+window_title = "Open a File"
+mode = 0
 
 [node name="AddnodeMenu" type="MenuButton" parent="VSplitContainer/OptionsBar/HBoxContainer"]
 margin_left = 39.0
@@ -76,5 +91,9 @@ margin_top = 30.0
 margin_right = 107.0
 margin_bottom = 70.0
 
+[connection signal="open" from="VSplitContainer/OptionsBar/HBoxContainer/FileMenu" to="." method="_on_FileMenu_open"]
+[connection signal="save" from="VSplitContainer/OptionsBar/HBoxContainer/FileMenu" to="." method="_on_FileMenu_save"]
+[connection signal="file_selected" from="VSplitContainer/OptionsBar/HBoxContainer/FileMenu/SettingsFileDialogue" to="VSplitContainer/OptionsBar/HBoxContainer/FileMenu" method="_on_SettingsFileDialogue_file_selected"]
+[connection signal="file_selected" from="VSplitContainer/OptionsBar/HBoxContainer/FileMenu/OpenFileDialogue" to="VSplitContainer/OptionsBar/HBoxContainer/FileMenu" method="_on_OpenFileDialogue_file_selected"]
 [connection signal="connection_request" from="VSplitContainer/DialogueTree" to="VSplitContainer/DialogueTree" method="_on_DialogueTree_connection_request"]
 [connection signal="connection_to_empty" from="VSplitContainer/DialogueTree" to="VSplitContainer/DialogueTree" method="_on_DialogueTree_connection_to_empty"]

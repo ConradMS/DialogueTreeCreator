@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "GraphNode",
+"class": "ChoiceNode",
+"language": "GDScript",
+"path": "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/ChoiceNode.gd"
+}, {
 "base": "Control",
 "class": "ConditionBox",
 "language": "GDScript",
@@ -24,10 +29,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueTree.gd"
 }, {
+"base": "MenuButton",
+"class": "DialogueTreeConfig",
+"language": "GDScript",
+"path": "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/UIComponents/SettingsMenuButton.gd"
+}, {
 "base": "Control",
 "class": "DialogueTreeControl",
 "language": "GDScript",
 "path": "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueTreeControl.gd"
+}, {
+"base": "GraphNode",
+"class": "DynamicNode",
+"language": "GDScript",
+"path": "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DynamicNode.gd"
 }, {
 "base": "GraphNode",
 "class": "GraphDialogueNode",
@@ -55,10 +70,13 @@ _global_script_classes=[ {
 "path": "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/TreeNode.gd"
 } ]
 _global_script_class_icons={
+"ChoiceNode": "",
 "ConditionBox": "",
 "DialogueNode": "",
 "DialogueTree": "",
+"DialogueTreeConfig": "",
 "DialogueTreeControl": "",
+"DynamicNode": "",
 "GraphDialogueNode": "",
 "Link": "",
 "NodeMethodConfig": "",

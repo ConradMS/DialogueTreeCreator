@@ -46,6 +46,10 @@ func _update_conditions():
 	conditions = selectorRoot.get_selected()
 
 
+func build_conditions_list(path):
+	selectorRoot.build_conditions(path)
+
+
 func get_var_dict() -> Dictionary:
 	var vars : Dictionary = {}
 	vars[DialogueTreeVariableNames.LINK_VARS.LINKED_ID] = linked_id

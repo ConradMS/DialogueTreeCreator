@@ -148,6 +148,12 @@ func get_link_scene() -> PackedScene:
 	return packed_scene
 
 
+func update_paths(paths : Dictionary):
+	for link in links.values():
+		if link is Link:
+			link.build_conditions_list(paths[DialogueTreeConfig.configureable_paths.CONDITIONS])
+
+
 func get_next_free_id() -> int:
 	var next_id = 0
 	while next_id in links:

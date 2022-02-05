@@ -1,26 +1,25 @@
 extends MenuButton
+class_name DialogueTreeConfig
 
 const config_option = "Configure Paths"
 const configureable_paths := {
 	CHARACTERS = "Characters",
 	EXPRESSIONS = "Expressions",
 	CONDITIONS  = "Conditions",
-	NODE_SCRIPTS = "Node Scripts",
 	THEMES = "Themes"
 }
 
 var paths = {
-	configureable_paths.CHARACTERS: "no path",
-	configureable_paths.EXPRESSIONS: "no path",
-	configureable_paths.CONDITIONS: "no path",
-	configureable_paths.NODE_SCRIPTS: "no path",
-	configureable_paths.THEMES: "no path",
+	configureable_paths.CHARACTERS: "res://addons/dialogue_tree_creator/Databases/default_characters.txt",
+	configureable_paths.EXPRESSIONS: "res://addons/dialogue_tree_creator/Databases/default_expressions.txt",
+	configureable_paths.CONDITIONS: "res://addons/dialogue_tree_creator/Databases/default_conditions.txt",
+	configureable_paths.THEMES: "No Path",
 }
 
 var configSubmenu = PopupMenu.new()
 var path_to_edit = "none"
 
-signal update_paths()
+signal update_paths(paths)
 onready var pathSelector = $PathSelector
 var popupMenu : PopupMenu
 
@@ -57,6 +56,6 @@ func _on_PathSelector_file_selected(path):
 	if paths.has(path_to_edit):
 		paths[path_to_edit] = path
 		_update_tooltips()
-		emit_signal("update_paths")
+		emit_signal("update_paths", paths)
 	else:
 		printerr("Trying to edit non-existant path type")

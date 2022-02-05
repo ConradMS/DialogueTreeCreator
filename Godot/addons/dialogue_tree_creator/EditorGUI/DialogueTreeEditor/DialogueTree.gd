@@ -21,6 +21,8 @@ const MAX_RECENTS = 5
 const FIRST_SLOT = 0
 const ROOT = 0
 
+const UPDATE_PATH_EXTENSION = "update_path_"
+
 signal warn(warning)
 
 func add_recent(recent : String):
@@ -149,11 +151,18 @@ func remove_link_info(from : String, from_slot):
 	var from_node = get_node_by_name(from)
 	var from_link : Link = from_node.links[from_slot]
 	from_link.linked_id = -1
-	
 
-func export_dialogue_tree() -> String:
+
+func update_node_paths(paths : Dictionary):
 	for node in nodes.values():
 		if node is TreeNode:
-			print(node.toJSON())
+			node.update_paths(paths)
+
+
+func export_dialogue_tree() -> PoolStringArray:
+	var exported_nodes : PoolStringArray = []
+	for node in nodes.values():
+		if node is TreeNode:
+			exported_nodes.append(node.toJSON())
 	
-	return ""
+	return exported_nodes

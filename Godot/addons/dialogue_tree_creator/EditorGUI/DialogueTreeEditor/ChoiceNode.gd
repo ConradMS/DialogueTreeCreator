@@ -1,4 +1,5 @@
 extends "res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/TreeNode.gd"
+class_name ChoiceNode
 const MIN_SIZE = Vector2(200, 100)
 const CHOICE_NODE = "Choice Node, id: "
 

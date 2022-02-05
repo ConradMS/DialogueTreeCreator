@@ -1,6 +1,6 @@
 extends Control
 
-onready var popupMenu = $PopupButton/PopupMenu
+onready var popupMenu : PopupMenu = $PopupButton/PopupMenu
 onready var recents = $PopupButton/PopupMenu/Recents
 onready var button = $PopupButton
 onready var charLabel = $CharLabel
@@ -12,11 +12,17 @@ const NO_HEADER_YET = "null"
 const ID = 0
 const NAME = 1
 
+const VALID_FILE_ENDING = ".txt"
+
 var depth = 1
+const default_path : String = "res://addons/dialogue_tree_creator/Databases/default_characters.txt"
+var submenu_count = 1
 
 func _ready():
 	popupMenu.connect("index_pressed", self, "suggestions_menu_pressed", [popupMenu])
 	recents.connect("index_pressed", self, "suggestions_menu_pressed", [recents])
+	build_suggestions_tab(default_path)
+
 
 func _on_PopupButton_pressed():
 	popupMenu.popup()
@@ -41,27 +47,39 @@ func sync_recents(recents : PoolStringArray):
 func suggestions_menu_pressed(index : int, menu : PopupMenu):
 	var option : String = menu.get_item_text(index)
 	charLabel.change_text_from_suggestions(option)
-# Assumed that the file_path has already been checked to be valid
-# Valid type: .txt and .JSON
-# format is # For a header and each line after is char id , name
+
+
+func is_correct_file_type(file_path : String) -> bool:
+	if file_path.ends_with(VALID_FILE_ENDING):
+		return true
+	return false
+
+
 func build_suggestions_tab(file_path : String):
 	var file = File.new()
-	
+
 	if !file.file_exists(file_path):
 		printerr("No such file to build suggestions tab: ", file_path)
 		return
-	
+
 	file.open(file_path, file.READ)
 	if file.eof_reached():
 		printerr("empty file to build suggestions tab: ", file_path)
 		return
 	
+	if !(is_correct_file_type(file_path)):
+		printerr("File to build expressions tab must be a .txt file: ", file_path)
+		return
+	
+	var exisiting_children = get_existing_children()
+	submenu_count = count_submenus()
 	var first_line = file.get_line().trim_prefix(" ")
 	if first_line[0] != HEADER_DELIM:
 		printerr("Character database must start with a header")
 		return
-	
+
 	var current_submenu : PopupMenu = _make_characters_submenu(first_line.lstrip(HEADER_DELIM).dedent(), popupMenu)
+	
 	while !file.eof_reached(): 
 		var next_line : String = file.get_line()
 		next_line.trim_prefix(" ")
@@ -69,6 +87,10 @@ func build_suggestions_tab(file_path : String):
 		if next_line.length() > 0:
 			if next_line[0] == HEADER_DELIM:
 				var parent_popup = _get_parent_popup(next_line, current_submenu)
+				if parent_popup == null:
+					revert_change(exisiting_children)
+					return
+				
 				current_submenu = _make_characters_submenu(next_line.lstrip(HEADER_DELIM).dedent(), parent_popup)
 			else:
 				# Split into two sections, the first is id, second is name
@@ -77,7 +99,39 @@ func build_suggestions_tab(file_path : String):
 				current_submenu.add_item(char_info[NAME])
 				# Use this later probably:
 	#			current_submenu.set_item_id()
-			
+	complete_changes(exisiting_children)
+
+
+func complete_changes(exisiting_children: Array):
+	for child in popupMenu.get_children():
+		if child in exisiting_children:
+			child.queue_free()
+	
+	for i in range(1, submenu_count):
+		popupMenu.remove_item(1)
+
+
+func count_submenus():
+	var count = 0
+	for child in popupMenu.get_children():
+		if child is PopupMenu:
+			count += 1
+	return count
+
+
+func revert_change(existing_children: Array):
+	for child in popupMenu.get_children():
+		if !(child in existing_children or child == recents):
+			child.queue_free()
+
+
+func get_existing_children() -> Array:
+	var existing = []
+	for child in popupMenu.get_children():
+		if child != recents and child is PopupMenu:
+			existing.append(child)
+	return existing 
+	
 
 # Return the Current menu
 func _make_characters_submenu(menu_name : String, parentPopup : PopupMenu) -> PopupMenu:

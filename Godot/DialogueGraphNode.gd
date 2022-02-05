@@ -19,10 +19,7 @@ signal sync_recents(recents)
 func _ready():
 	create_title(DIALOGUE_NODE_NAME)
 	type = DialogueTreeVariableNames.NODE_TYPES.DIALOGUE_NODE
-	
-	characterSearchBar.build_suggestions_tab("res://addons/dialogue_tree_creator/Databases/default_characters.txt")
-	expressionList.build_expression_list("res://addons/dialogue_tree_creator/Databases/default_expressions.txt")
-	
+
 	var status = connect("resize_request", self, "_resize")
 	if status != OK:
 		printerr("DialogueGraphNode Line 29, Error: ", status)
@@ -59,6 +56,12 @@ func _resize(new_size = Vector2(0, 0)):
 		rescale_size.y = MIN_NODE_OPTIONS_SIZE.y
 	
 	rect_size = rescale_size
+
+
+func update_paths(paths : Dictionary):
+	.update_paths(paths)
+	characterSearchBar.build_suggestions_tab(paths[DialogueTreeConfig.configureable_paths.CHARACTERS])
+	expressionList.build_expression_list(paths[DialogueTreeConfig.configureable_paths.EXPRESSIONS])
 
 
 func _on_ExpressionList_item_selected(index):

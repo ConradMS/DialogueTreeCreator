@@ -37,6 +37,30 @@ func _ready():
 	_add_link()
 
 
+func build_from_var_dict(var_dict : Dictionary) -> bool:
+	var ok = .build_from_var_dict(var_dict)
+	
+	var required_vars = DialogueTreeVariableNames.DIALOGUE_NODE_VARS.values()
+	if(!var_dict.has_all(required_vars)):
+		printerr("Dialogue node does not contain all the required varaibles")
+		ok = false
+		return ok
+	
+	var lines_var = var_dict[DialogueTreeVariableNames.DIALOGUE_NODE_VARS.LINES]
+	var character_var = var_dict[DialogueTreeVariableNames.DIALOGUE_NODE_VARS.CHARACTER]
+	var expressions_var = var_dict[DialogueTreeVariableNames.DIALOGUE_NODE_VARS.EXPRESSION]
+	
+	if !(lines_var is String and character_var is String and expressions_var is String):
+		printerr("Dialogue node varaibles are not the required tpye")
+		ok = false
+	
+	lines = lines_var
+	char_name = character_var
+	expr = expressions_var
+	
+	return ok
+
+
 func _update_lines():
 	if dialogueLinesBox.text != dialogueLinesBox.DEFAULT_TEXT:
 		lines = dialogueLinesBox.text
@@ -87,3 +111,4 @@ func get_var_dict():
 	var_dict[DialogueTreeVariableNames.DIALOGUE_NODE_VARS.EXPRESSION] = expr
 	
 	return var_dict
+

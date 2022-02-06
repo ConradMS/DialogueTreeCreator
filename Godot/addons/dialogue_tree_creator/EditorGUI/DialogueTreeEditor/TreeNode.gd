@@ -25,6 +25,46 @@ func _input(event):
 			delete_self()
 
 
+func build_from_var_dict(var_dict : Dictionary) -> bool:
+	var required_vars : Array = DialogueTreeVariableNames.TREE_NODE_VARS.values()
+	var ok = true
+	if !(var_dict.has_all(required_vars)):
+		printerr("Node does not have all the required tree node variables")
+		ok = false
+		return ok
+
+	var id_var = var_dict[DialogueTreeVariableNames.TREE_NODE_VARS.ID]
+	var type_var = var_dict[DialogueTreeVariableNames.TREE_NODE_VARS.TYPE]
+	var links_var = var_dict[DialogueTreeVariableNames.TREE_NODE_VARS.LINKS]
+	
+	id_var = int(id_var) if id_var is float else id_var
+	
+	if !(id_var is int and type_var is String):
+		printerr("Tree node varaibles are not the required type")
+		ok = false
+	
+	id = id_var
+	type = type_var
+		
+	if links_var is Dictionary:
+		for key in links_var.keys():
+			if !(key is int):
+				printerr("Key is not of type int")
+				print(key is String)
+				ok = false
+			
+			var new_link : Link = link_scene.instance()
+			var status = new_link.build_from_var_dict(links_var[key])
+			
+			ok = status if !status else ok
+			links[key] = new_link
+	else:
+		printerr("Set of links is not a dictionary")
+		ok = false
+	
+	return ok
+
+
 func editing_children() -> bool:
 	var editing = false
 	for child in get_children():

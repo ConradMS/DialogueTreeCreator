@@ -12,6 +12,24 @@ func _ready():
 	type = DialogueTreeVariableNames.NODE_TYPES.CHOICE_NODE
 
 
+func build_from_var_dict(var_dict : Dictionary) -> bool:
+	var ok = .build_from_var_dict(var_dict)
+	var required_vars = DialogueTreeVariableNames.CHOICE_NODE_VARS.values()
+	
+	if (!var_dict.has_all(required_vars)):
+		printerr("Choice node does not contain all the required varaibles")
+		ok = false
+		return ok
+	
+	var choice_hint_var = var_dict[DialogueTreeVariableNames.CHOICE_NODE_VARS.CHOICE_HINT]
+	
+	if !(choice_hint_var is String):
+		ok = false
+		
+	choice_hint = choice_hint_var
+	return ok
+
+
 func _on_ChoiceNode_resize_request(new_minsize):
 	rect_size = Vector2(max(MIN_SIZE.x, new_minsize.x), max(MIN_SIZE.y, new_minsize.y))
 

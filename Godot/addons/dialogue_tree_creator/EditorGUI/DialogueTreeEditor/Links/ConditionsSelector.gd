@@ -117,6 +117,15 @@ func get_selected() -> PoolStringArray:
 	return selected
 
 
+func add_external_condition_box(box_name : String, box : ConditionBox):
+	var new_id = condition_boxes.size()
+	condition_boxes[condition_boxes.size()] = box
+	var item_list = box.get_conditions_list()
+	item_list.connect("multi_selected", self, "update_conditions")
+	
+	popup.add_item(box_name, new_id)
+
+
 func _on_ConditionsSelector_id_pressed(id):
 	if condition_boxes.has(id):
 		var box : ConditionBox = condition_boxes[id]

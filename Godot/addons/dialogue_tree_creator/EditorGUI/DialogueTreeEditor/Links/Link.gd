@@ -10,6 +10,7 @@ var id : int
 
 onready var priorityBox : SpinBox = $SpinBox
 onready var selectorRoot = $ConditionSelectorRoot
+onready var condition_box_scene = preload("res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/Links/PopupConditionList.tscn")
 
 signal remove_link(id)
 signal change_priority(old, new, link)
@@ -19,6 +20,55 @@ func init(id_i : int):
 
 func _ready():
 	selectorRoot.connect("selection_made", self, "_update_conditions")
+
+
+func build_from_var_dict(var_dict : Dictionary) -> bool:
+	var ok = true
+	var required_keys = DialogueTreeVariableNames.LINK_VARS.values()
+	
+	if(!var_dict.has_all(required_keys)):
+		printerr("Link does not contain all of the required link varaaibles")
+		ok = false
+		return ok
+	
+	var pri = var_dict[DialogueTreeVariableNames.LINK_VARS.PRIORITY]
+	var link_id = var_dict[DialogueTreeVariableNames.LINK_VARS.LINKED_ID]
+	var cond = var_dict[DialogueTreeVariableNames.LINK_VARS.CONDITIONS]
+	
+	pri = int(pri) if pri is float else pri
+	link_id = int(pri) if pri is float else pri
+	
+	if !(pri is int and cond is Array and link_id is int):
+		printerr("Link varaibles are not the required type")
+		ok = false
+		
+	priority = pri
+	linked_id = link_id
+	cond = conditions
+	
+#	if ok:
+#		select_conditions(cond)
+	
+	return ok
+
+
+func select_conditions(cond : Array):
+	for condition_list in selectorRoot.condition_boxes.values():
+		var item_list : ItemList = condition_list
+		
+		for id in item_list.get_item_count():
+			var item_text = item_list.get_item_text(id)
+			if item_text in cond:
+				item_list.select(id)
+				cond.remove(item_text)
+				
+	if !(cond.empty()):
+		var condition_box : ConditionBox = condition_box_scene.instance()
+		for condition in cond:
+			if condition is String:
+				condition_box.add_new_condition(condition)
+				selectorRoot.add_external_condition_box("Imported Conditions", condition_box)
+	
 
 func _on_RemoveLink_pressed():
 	emit_signal("remove_link", id)
@@ -56,3 +106,5 @@ func get_var_dict() -> Dictionary:
 	vars[DialogueTreeVariableNames.LINK_VARS.PRIORITY] = priority
 	vars[DialogueTreeVariableNames.LINK_VARS.CONDITIONS] = conditions
 	return vars
+	
+

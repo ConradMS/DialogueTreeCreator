@@ -11,6 +11,7 @@ func _ready():
 	if status != OK:
 		printerr("ConditionList.gd, Line 9, Error: ", status)
 
+
 func _process(_delta):
 	if conditionList.visible == false:
 		return
@@ -20,15 +21,19 @@ func _process(_delta):
 	else:
 		conditionList.visible = false
 
+
 func _on_ConditionList_visibility_changed():
 	conditionButton.visible = conditionList.visible
+
 
 func show_box():
 	conditionList.visible = true
 	conditionList.call_deferred("grab_focus")
 
+
 func add_new_condition(condition : String):
 	conditionList.add_item(condition)
+	
 	
 func get_conditions_list() -> ItemList:
 	return conditionList

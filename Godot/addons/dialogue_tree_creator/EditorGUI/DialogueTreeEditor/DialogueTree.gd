@@ -8,6 +8,13 @@ const NODE_TYPES = {
 	CHOICE_NODE = 2
 }
 
+# Refactor later to remove this
+const ENUM_VALUES = {
+	"Dialogue": 0,
+	"Dynamic": 1,
+	"Choice": 2
+}
+
 const NODE_REFERENCES = {
 	NODE_TYPES.DIALOGUE_NODE: preload("res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueNode.tscn"),
 	NODE_TYPES.DYNAMIC_NODE: preload("res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DynamNode.tscn"),
@@ -39,6 +46,8 @@ func sync_recents():
 			node.sync_recent_searches(recentSearches)
 
 
+# Could replace most of this function with a call to add_tree_node
+# When the empty node has been constructed
 func add_node(type : int) -> int:
 	var node_scene : PackedScene = NODE_REFERENCES[type]
 	var new_node : TreeNode = node_scene.instance()
@@ -55,6 +64,15 @@ func add_node(type : int) -> int:
 	
 	sync_recents()
 	return new_node.id
+	
+
+func add_tree_node(node : TreeNode):
+	nodes[node.id] = node
+	if node is GraphDialogueNode:
+		node.connect("sync_recents", self, "add_recent")
+	
+	self.add_child(node)
+	node.connect("remove_node", self, "remove_node")
 
 
 func get_next_avaliable_id() -> int:
@@ -166,3 +184,35 @@ func export_dialogue_tree() -> PoolStringArray:
 			exported_nodes.append(node.toJSON())
 	
 	return exported_nodes
+
+
+func build_node(var_dict : Dictionary) -> TreeNode:
+	if !(var_dict.has(DialogueTreeVariableNames.TREE_NODE_VARS.TYPE)):
+		printerr("var dict for node does not contain type information")
+		return null
+	
+	var type = var_dict[DialogueTreeVariableNames.TREE_NODE_VARS.TYPE]
+	var enum_value = ENUM_VALUES[type]
+	
+	if !(NODE_REFERENCES.has(enum_value)):
+		printerr("Unknown type: ", type)
+		return null
+	
+	var new_node : TreeNode = NODE_REFERENCES[enum_value].instance()
+	var ok = new_node.build_from_var_dict(var_dict)
+	
+	if !ok:
+		return null
+	
+	return new_node
+
+# Nodes are already checked to be fine 
+func construct_dialogue_tree(nodes_array: Array):
+	nodes.clear()
+	
+	for node in get_children():
+		if node is TreeNode:
+			node.queue_free()
+	
+	for node in nodes_array:
+		add_tree_node(node)

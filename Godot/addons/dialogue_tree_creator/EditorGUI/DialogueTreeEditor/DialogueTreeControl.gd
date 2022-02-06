@@ -62,4 +62,37 @@ func _on_FileMenu_save(path):
 
 
 func _on_FileMenu_open(path):
-	pass # Replace with function body.
+	var file : File = File.new()
+	file.open(path, file.READ)
+	
+	# Array of TreeNodes
+	var nodes = [] 
+	
+	var next_line = ""
+	while !(file.eof_reached()):
+		next_line = file.get_line()
+		var status = validate_json(next_line)
+		
+		if status != "":
+			printerr("Not valid JSON data")
+			return
+		
+		var var_dict = JSON.parse(next_line).result
+		if !(var_dict is Dictionary):
+			printerr("JSON is not a dialogue tree")
+			return 
+		
+		var new_node : TreeNode = dialogueTree.build_node(var_dict)
+		if new_node == null:
+			printerr("Malformed JSON to create dialogue tree")
+			return
+		
+		nodes.append(new_node)
+	dialogueTree.construct_dialogue_tree(nodes)
+#	validate_nodes(nodes)
+
+# Here check to make sure nodes are formatted correctly, i.e. if all
+# links link to an existing node and what not, If there are formatting issues
+# Display them, and a popup warning the user, with an option to proccede 
+func validate_nodes(nodes : Array):
+	pass

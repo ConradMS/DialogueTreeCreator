@@ -45,12 +45,12 @@ func build_from_var_dict(var_dict : Dictionary) -> bool:
 	
 	id = id_var
 	type = type_var
-		
+	ok = ok and validate_links_var(links_var)
+	
 	if links_var is Dictionary:
 		for key in links_var.keys():
 			if !(key is int):
 				printerr("Key is not of type int")
-				print(key is String)
 				ok = false
 			
 			var new_link : Link = link_scene.instance()
@@ -63,6 +63,29 @@ func build_from_var_dict(var_dict : Dictionary) -> bool:
 		ok = false
 	
 	return ok
+
+func validate_links_var(links_var : Dictionary) -> bool:
+	var num_regex = RegEx.new()
+	num_regex.compile("[0-9]+")
+
+	var ok = true
+	for key in links_var.keys():
+		if(key is String):
+			var reg_match : RegExMatch = num_regex.search(key)
+			var res : String = reg_match.get_string()
+			
+			if res == key:
+				links_var[int(key)] = links_var[key]
+				links_var.erase(key)
+			else:
+				ok = false
+	return ok
+	
+
+func sync_graph_node():
+	for link in links.values():
+		if link is Link:
+			link.sync_link()
 
 
 func editing_children() -> bool:
@@ -97,12 +120,12 @@ func get_var_dict():
 			vars[DialogueTreeVariableNames.TREE_NODE_VARS.LINKS][key] = link_i.get_var_dict()
 		else:
 			printerr("Object not of type Link in links")
-
 	return vars
 	
 
 func toJSON() -> String:
 	return to_json(get_var_dict())
+
 
 func _add_link():
 	var link = get_link_scene().instance()

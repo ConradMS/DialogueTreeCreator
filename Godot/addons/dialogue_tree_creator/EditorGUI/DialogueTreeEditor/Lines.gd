@@ -12,6 +12,11 @@ func _ready():
 	set(FONT_COLOUR, LIGHT_GRAY)
 
 
+func set_text(new_text : String):
+	set(FONT_COLOUR, WHITE)
+	text = new_text
+
+
 func _on_Lines_focus_entered():
 	if text == DEFAULT_TEXT:
 		text = ""

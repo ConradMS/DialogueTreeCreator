@@ -31,3 +31,13 @@ func build_expression_list(file_path : String):
 		next_line = file.get_line()
 		if next_line.length() > 0:
 			add_item(next_line)
+
+
+func add_option(option : String):
+	var has_option = false
+	for i in range(0, get_item_count()):
+		if get_item_text(i) == option:
+			has_option = true
+	
+	if !has_option:
+		add_item(option)

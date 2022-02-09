@@ -61,6 +61,21 @@ func build_from_var_dict(var_dict : Dictionary) -> bool:
 	return ok
 
 
+func sync_graph_node():
+	.sync_graph_node()
+	dialogueLinesBox.set_text(lines)
+
+
+func add_name_import_info(names : PoolStringArray):
+	for potential_new_name in names:
+		characterSearchBar.add_name(potential_new_name)
+
+
+func add_expression_import_info(expressions : PoolStringArray):
+	for potential_new_expr in expressions:
+		expressionList.add_option(potential_new_expr)
+
+
 func _update_lines():
 	if dialogueLinesBox.text != dialogueLinesBox.DEFAULT_TEXT:
 		lines = dialogueLinesBox.text

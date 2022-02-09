@@ -11,6 +11,7 @@ func _ready():
 	text = DEFAULT_TEXT
 	set(FONT_COLOUR, LIGHT_GRAY)
 
+
 func _input(event):
 	# Stop editing text field if currently editing text field and you press enter
 	if has_focus():

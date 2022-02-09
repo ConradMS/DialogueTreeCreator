@@ -33,10 +33,11 @@ func build_from_var_dict(var_dict : Dictionary) -> bool:
 	
 	var pri = var_dict[DialogueTreeVariableNames.LINK_VARS.PRIORITY]
 	var link_id = var_dict[DialogueTreeVariableNames.LINK_VARS.LINKED_ID]
+	
 	var cond = var_dict[DialogueTreeVariableNames.LINK_VARS.CONDITIONS]
 	
 	pri = int(pri) if pri is float else pri
-	link_id = int(pri) if pri is float else pri
+	link_id = int(link_id) if link_id is float else link_id
 	
 	if !(pri is int and cond is Array and link_id is int):
 		printerr("Link varaibles are not the required type")
@@ -46,11 +47,13 @@ func build_from_var_dict(var_dict : Dictionary) -> bool:
 	linked_id = link_id
 	cond = conditions
 	
-#	if ok:
-#		select_conditions(cond)
-	
 	return ok
 
+
+func sync_link():
+	select_conditions(conditions)
+	priorityBox.value = priority
+	
 
 func select_conditions(cond : Array):
 	for condition_list in selectorRoot.condition_boxes.values():

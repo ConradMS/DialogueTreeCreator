@@ -14,6 +14,8 @@ const NAME = 1
 
 const VALID_FILE_ENDING = ".txt"
 
+const IMPORTS = "Imports"
+
 var depth = 1
 const default_path : String = "res://addons/dialogue_tree_creator/Databases/default_characters.txt"
 var submenu_count = 1
@@ -169,3 +171,47 @@ func _get_parent_popup(next_line : String, child : PopupMenu) -> PopupMenu:
 
 		depth += 1
 		return parent 
+
+
+func add_name(new_name : String):
+	if is_existing_name(new_name, popupMenu):
+		return
+	
+	var has_import = false
+	var imports_menu : PopupMenu
+	for child in popupMenu.get_children():
+		if child.name == IMPORTS:
+			has_import = true
+			imports_menu = child
+			
+	if !has_import:
+		imports_menu = add_imports_menu()
+	
+	imports_menu.add_item(new_name)
+
+
+func add_imports_menu() -> PopupMenu:
+	var imports = PopupMenu.new()
+	
+	popupMenu.add_child(imports)
+	imports.name = IMPORTS
+	popupMenu.add_submenu_item(IMPORTS, IMPORTS)
+	
+	imports.connect("index_pressed", self, "suggestions_menu_pressed", [imports])
+	return imports
+
+
+func is_existing_name(target : String, popup : PopupMenu):
+	var exists = false
+	
+	for i in range(0, popup.get_item_count()):
+		if popup.get_item_text(i) == target:
+			exists = true
+	
+	if !exists:
+		for child in popup.get_children():
+			if child is PopupMenu:
+				exists = exists or is_existing_name(target, child)
+	
+	return exists
+	

@@ -110,9 +110,15 @@ func _on_FileMenu_open(path):
 		
 		nodes.append(new_node)
 	
+	#	validate_nodes(nodes)
 	dialogueTree.construct_dialogue_tree(nodes)
+	# Have to finish for conditions 
 	add_imported_information(nodes)
-#	validate_nodes(nodes)
+	# Have to finish for selecting conditions and also node scripts for dynamic nodes
+	sync_nodes(nodes)
+	space_nodes(nodes)
+	# Connect nodes
+
 
 # Here check to make sure nodes are formatted correctly, i.e. if all
 # links link to an existing node and what not, If there are formatting issues
@@ -182,3 +188,122 @@ func add_link_information(node : TreeNode, conds : PoolStringArray):
 			for condition in link.conditions:
 				if !(condition in conds):
 					conds.append(condition)
+
+
+func sync_nodes(nodes : Array):
+	for node in nodes:
+		if node is TreeNode:
+			node.sync_graph_node()
+
+
+func space_nodes(nodes : Array):
+	if (nodes.size() < 2):
+		print("Not enough nodes to space / Nodes are not type treenode")
+		return
+	
+	var node_dict = get_node_dict(nodes)
+	var root = get_root(nodes)
+	var placed = []
+	
+	place_children(root, placed, node_dict)
+	
+	var mag_between_nodes = 50
+	
+	for node in nodes:
+		if node is TreeNode:
+			if !(node in placed):
+				var node_offset = get_new_node_position(mag_between_nodes, 0, node, node, placed)
+				
+				move_node(node_offset, node)
+				place_children(node, placed, node_dict)
+
+
+func place_children(parent : TreeNode, placed : Array, node_dict : Dictionary):
+	if parent in placed:
+		return
+	
+	placed.append(parent)
+	var spawn_region_size = PI / 2 
+	var num_links = parent.links.values().size()
+	
+	var rotation_per_node = spawn_region_size / num_links
+	
+	var mag_between_nodes = 50
+	var count = 0
+	for link in parent.links.values():
+		if link is Link:
+			if node_dict.has(link.linked_id):
+				var linked_node = node_dict[link.linked_id]
+				
+				if !(linked_node in placed):
+					var node_offset = get_new_node_position(mag_between_nodes, rotation_per_node * count, parent, linked_node, placed)
+					
+					move_node(node_offset, linked_node)
+					place_children(linked_node, placed, node_dict)
+		count += 1
+
+
+func get_new_node_position(init_magnitute : float , init_rotation : float , parent : TreeNode, node : TreeNode, placed : Array) -> Vector2:
+	var mag = init_magnitute
+	var rotation = init_rotation
+	var init_offset = calculate_offset(init_magnitute, init_rotation)
+	
+	var size = node.rect_size
+	var offset = parent.offset + calculate_offset(mag, rotation)
+	
+	while overlaps_any(offset, size, placed):
+		if init_rotation == 0:
+			init_rotation = - PI/2
+		else:
+			mag += init_magnitute
+		
+		offset = parent.offset + calculate_offset(mag, rotation)
+	return offset
+
+
+func calculate_offset(magnitude : float, rotation : float) -> Vector2:
+	return Vector2(magnitude * cos(rotation), magnitude * sin(rotation))
+
+
+func overlaps_any(offset : Vector2, size : Vector2, placed : Array) -> bool:
+	var overlaps = false
+	for node in placed:
+		if node is TreeNode:
+			overlaps = overlaps or is_overlapping(offset, size, node.offset, node.rect_size)
+	
+	return overlaps
+
+
+func is_overlapping(pos1 : Vector2, size1 : Vector2, pos2 : Vector2, size2: Vector2) -> bool:
+	var overlaps_x = false
+	if pos1.x + size1.x > pos2.x and pos2.x + size2.x > pos1.x:
+		overlaps_x = true
+	
+	var overlaps_y = false
+	if pos1.y + size1.y > pos2.y and pos2.y + size2.y > pos1.y:
+		overlaps_y = true
+	
+	return overlaps_x and overlaps_y
+
+
+func get_node_dict(nodes : Array):
+	var dict : Dictionary = {}
+	for node in nodes:
+		if node is TreeNode:
+			dict[node.id] = node
+	
+	return dict
+
+
+func get_root(nodes : Array):
+	for node in nodes:
+		if node is TreeNode:
+			if node.id == DialogueTree.ROOT:
+				return node
+	
+	printerr("No root in nodes")
+	return nodes[0]
+
+
+func move_node(position : Vector2, node : TreeNode):
+	node.offset = (position + dialogueTree.scroll_offset) / dialogueTree.zoom

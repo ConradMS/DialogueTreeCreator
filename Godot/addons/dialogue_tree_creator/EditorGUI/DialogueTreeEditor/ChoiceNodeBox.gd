@@ -20,3 +20,8 @@ func _on_TextEdit_focus_exited():
 	if text == "":
 		text = DEFAULT_TEXT
 		set(FONT_COLOUR, LIGHT_GRAY)
+
+
+func set_text(new_text : String):
+	text = new_text
+	set(FONT_COLOUR, WHITE)

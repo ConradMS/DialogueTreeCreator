@@ -58,6 +58,8 @@ func build_from_var_dict(var_dict : Dictionary) -> bool:
 			
 			ok = status if !status else ok
 			links[key] = new_link
+			
+			add_link_from_obj(new_link)
 	else:
 		printerr("Set of links is not a dictionary")
 		ok = false
@@ -144,7 +146,16 @@ func _add_link():
 	self.add_child(link)
 	_fit_priority(link)
 	_add_link_slot()
+
+
+func add_link_from_obj(link : Link):
+	link.connect("remove_link", self, "_remove_link")
+	link.connect("change_priority", self, "find_priority_dir")
 	
+	rect_size.y += link.rect_size.y + SPACE_BETWEEN_SLOTS
+	self.add_child(link)
+	_add_link_slot()
+
 
 func is_unique_priority(value : int) -> bool:
 	var unique = true

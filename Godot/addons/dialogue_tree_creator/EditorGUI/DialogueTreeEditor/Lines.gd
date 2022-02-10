@@ -6,7 +6,7 @@ const FONT_COLOUR = "custom_colors/font_color"
 const LIGHT_GRAY = Color(0.5, 0.5, 0.5, 1)
 const WHITE = Color(1, 1, 1, 1)
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
 	text = DEFAULT_TEXT
 	set(FONT_COLOUR, LIGHT_GRAY)

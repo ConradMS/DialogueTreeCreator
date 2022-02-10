@@ -13,8 +13,10 @@ signal selection_made()
 var condition_boxes : Dictionary = {}
 var depth = 0
 
+
 func _ready():
 	build_conditions(default_path)
+
 
 func is_correct_file_type(file_path : String):
 	if file_path.ends_with(VALID_FILE_TYPE):

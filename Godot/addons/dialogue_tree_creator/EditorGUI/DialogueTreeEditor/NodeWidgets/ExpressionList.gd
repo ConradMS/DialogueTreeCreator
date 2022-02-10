@@ -41,3 +41,13 @@ func add_option(option : String):
 	
 	if !has_option:
 		add_item(option)
+		
+
+func select_item_by_name(item_name : String):
+	for i in range(0, get_item_count()):
+		if get_item_text(i) == item_name:
+			select(i)
+			return
+	
+	printerr("No such expression in expression list: ", item_name)
+	

@@ -51,7 +51,7 @@ func build_from_var_dict(var_dict : Dictionary) -> bool:
 
 
 func sync_link():
-	select_conditions(conditions)
+#	select_conditions(conditions)
 	priorityBox.value = priority
 	
 

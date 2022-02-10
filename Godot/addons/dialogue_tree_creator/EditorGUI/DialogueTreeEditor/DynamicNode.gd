@@ -16,6 +16,10 @@ func get_var_dict():
 	return var_dict
 
 
+func sync_graph_node():
+	.sync_graph_node()
+
+
 func build_from_var_dict(var_dict : Dictionary) -> bool:
 	var ok = .build_from_var_dict(var_dict)
 	var required_vars : Array = DialogueTreeVariableNames.DYANIMC_NODE_VARS.values()

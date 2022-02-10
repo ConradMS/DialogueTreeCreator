@@ -30,6 +30,11 @@ func build_from_var_dict(var_dict : Dictionary) -> bool:
 	return ok
 
 
+func sync_graph_node():
+	.sync_graph_node()
+	textbox.set_text(choice_hint)
+
+
 func _on_ChoiceNode_resize_request(new_minsize):
 	rect_size = Vector2(max(MIN_SIZE.x, new_minsize.x), max(MIN_SIZE.y, new_minsize.y))
 

@@ -64,6 +64,8 @@ func build_from_var_dict(var_dict : Dictionary) -> bool:
 func sync_graph_node():
 	.sync_graph_node()
 	dialogueLinesBox.set_text(lines)
+	characterNameBox.change_text_from_suggestions(char_name)
+	expressionList.select_item_by_name(expr)
 
 
 func add_name_import_info(names : PoolStringArray):
@@ -126,4 +128,3 @@ func get_var_dict():
 	var_dict[DialogueTreeVariableNames.DIALOGUE_NODE_VARS.EXPRESSION] = expr
 	
 	return var_dict
-

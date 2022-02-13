@@ -46,7 +46,7 @@ func build_from_var_dict(var_dict : Dictionary) -> bool:
 	id = id_var
 	type = type_var
 	ok = ok and validate_links_var(links_var)
-	
+
 	if links_var is Dictionary:
 		for key in links_var.keys():
 			if !(key is int):
@@ -56,7 +56,7 @@ func build_from_var_dict(var_dict : Dictionary) -> bool:
 			var new_link : Link = link_scene.instance()
 			var status = new_link.build_from_var_dict(links_var[key])
 			
-			ok = status if !status else ok
+			ok = status and ok
 			links[key] = new_link
 			
 			add_link_from_obj(new_link)
@@ -75,14 +75,14 @@ func validate_links_var(links_var : Dictionary) -> bool:
 		if(key is String):
 			var reg_match : RegExMatch = num_regex.search(key)
 			var res : String = reg_match.get_string()
-			
+
 			if res == key:
 				links_var[int(key)] = links_var[key]
 				links_var.erase(key)
 			else:
 				ok = false
 	return ok
-	
+
 
 func sync_graph_node():
 	for link in links.values():

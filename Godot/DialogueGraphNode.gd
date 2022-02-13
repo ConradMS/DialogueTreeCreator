@@ -34,7 +34,8 @@ func _ready():
 	
 	characterNameBox.connect("add_recent", self, "ping_recents")
 	
-	_add_link()
+	if links.size() < 1:
+		_add_link()
 
 
 func build_from_var_dict(var_dict : Dictionary) -> bool:

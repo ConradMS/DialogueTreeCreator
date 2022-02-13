@@ -117,7 +117,7 @@ func _on_FileMenu_open(path):
 	# Have to finish for selecting conditions and also node scripts for dynamic nodes
 	sync_nodes(nodes)
 	space_nodes(nodes)
-	# Connect nodes
+	connect_nodes(nodes)
 
 
 # Here check to make sure nodes are formatted correctly, i.e. if all
@@ -207,7 +207,7 @@ func space_nodes(nodes : Array):
 	
 	place_children(root, placed, node_dict)
 	
-	var mag_between_nodes = 50
+	var mag_between_nodes = 100
 	
 	for node in nodes:
 		if node is TreeNode:
@@ -228,7 +228,7 @@ func place_children(parent : TreeNode, placed : Array, node_dict : Dictionary):
 	
 	var rotation_per_node = spawn_region_size / num_links
 	
-	var mag_between_nodes = 50
+	var mag_between_nodes = 100
 	var count = 0
 	for link in parent.links.values():
 		if link is Link:
@@ -307,3 +307,30 @@ func get_root(nodes : Array):
 
 func move_node(position : Vector2, node : TreeNode):
 	node.offset = (position + dialogueTree.scroll_offset) / dialogueTree.zoom
+
+
+func connect_nodes(nodes : Array):
+	var node_dict : Dictionary = get_node_dict(nodes)
+	
+	for node in nodes:
+		if node is TreeNode:
+			for link in node.links.values():
+				if link is Link:
+					connect_from_link(node, link, node_dict)
+
+
+func connect_from_link(from_node : TreeNode, link : Link, node_dict : Dictionary):
+	var to_id = link.linked_id
+	# Need to init the links
+	if to_id < 0:
+		return
+		
+	if !(node_dict.has(to_id)):
+		printerr("Link connects to non-existant id")
+		return
+	
+	var to_node = node_dict[to_id]
+	var from_slot = link.id
+	dialogueTree.connect_nodes(from_node.name, from_slot, to_node.name, 0)
+	
+

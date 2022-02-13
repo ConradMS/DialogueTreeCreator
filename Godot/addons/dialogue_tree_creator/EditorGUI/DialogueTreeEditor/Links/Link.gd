@@ -2,7 +2,7 @@ extends Control
 class_name Link
 
 
-var linked_id : int
+var linked_id : int = -1
 var priority : int
 var conditions : PoolStringArray
 
@@ -27,17 +27,18 @@ func build_from_var_dict(var_dict : Dictionary) -> bool:
 	var required_keys = DialogueTreeVariableNames.LINK_VARS.values()
 	
 	if(!var_dict.has_all(required_keys)):
-		printerr("Link does not contain all of the required link varaaibles")
+		printerr("Link does not contain all of the required link varaibles")
 		ok = false
 		return ok
 	
 	var pri = var_dict[DialogueTreeVariableNames.LINK_VARS.PRIORITY]
 	var link_id = var_dict[DialogueTreeVariableNames.LINK_VARS.LINKED_ID]
-	
+	var id_in = var_dict[DialogueTreeVariableNames.LINK_VARS.ID]
 	var cond = var_dict[DialogueTreeVariableNames.LINK_VARS.CONDITIONS]
 	
 	pri = int(pri) if pri is float else pri
 	link_id = int(link_id) if link_id is float else link_id
+	id_in = int(id_in) if id_in is float else id_in
 	
 	if !(pri is int and cond is Array and link_id is int):
 		printerr("Link varaibles are not the required type")
@@ -46,6 +47,7 @@ func build_from_var_dict(var_dict : Dictionary) -> bool:
 	priority = pri
 	linked_id = link_id
 	cond = conditions
+	id = id_in
 	
 	return ok
 
@@ -105,6 +107,7 @@ func build_conditions_list(path):
 
 func get_var_dict() -> Dictionary:
 	var vars : Dictionary = {}
+	vars[DialogueTreeVariableNames.LINK_VARS.ID] = id
 	vars[DialogueTreeVariableNames.LINK_VARS.LINKED_ID] = linked_id
 	vars[DialogueTreeVariableNames.LINK_VARS.PRIORITY] = priority
 	vars[DialogueTreeVariableNames.LINK_VARS.CONDITIONS] = conditions

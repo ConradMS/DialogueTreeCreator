@@ -28,6 +28,7 @@ const CHOICE_NODE_VARS : Dictionary = {
 }
 
 const LINK_VARS : Dictionary = {
+	ID = "id",
 	LINKED_ID = "linked_id",
 	PRIORITY = "priority",
 	CONDITIONS = "conditions"

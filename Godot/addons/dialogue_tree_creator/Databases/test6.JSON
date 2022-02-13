@@ -1,0 +1,6 @@
+{"char_name":"","expression":"","id":0,"lines":"","links":{"0":{"conditions":[],"linked_id":2,"priority":0},"1":{"conditions":[],"linked_id":3,"priority":1},"2":{"conditions":[],"linked_id":1,"priority":2}},"type":"Dialogue"}
+{"char_name":"","expression":"","id":1,"lines":"","links":{"0":{"conditions":[],"linked_id":4,"priority":0}},"type":"Dialogue"}
+{"char_name":"","expression":"","id":2,"lines":"","links":{"0":{"conditions":[],"linked_id":-1,"priority":0}},"type":"Dialogue"}
+{"char_name":"","expression":"","id":3,"lines":"","links":{"0":{"conditions":[],"linked_id":-1,"priority":0}},"type":"Dialogue"}
+{"char_name":"","expression":"","id":4,"lines":"","links":{"0":{"conditions":[],"linked_id":5,"priority":0}},"type":"Dialogue"}
+{"char_name":"","expression":"","id":5,"lines":"","links":{"0":{"conditions":[],"linked_id":-1,"priority":0}},"type":"Dialogue"}

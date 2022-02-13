@@ -10,6 +10,9 @@ onready var textbox = $TextEdit
 func _ready():
 	create_title(CHOICE_NODE)
 	type = DialogueTreeVariableNames.NODE_TYPES.CHOICE_NODE
+	
+	if links.size() < 1:
+		_add_link()
 
 
 func build_from_var_dict(var_dict : Dictionary) -> bool:

@@ -9,6 +9,7 @@ var link_scene : PackedScene = preload("res://addons/dialogue_tree_creator/Edito
 const SPACE_BETWEEN_SLOTS = 1
 
 signal remove_node(id)
+signal remove_link(link_id)
 
 func init(id_i : int):
 	id = id_i
@@ -17,12 +18,16 @@ func init(id_i : int):
 
 func delete_self():
 	emit_signal("remove_node", id)
-	
 
 func _input(event):
 	if Input.is_key_pressed(KEY_BACKSPACE):
-		if selected and !editing_children():
+		if selected and !writing_text():
 			delete_self()
+			
+
+func writing_text() -> bool:
+	var focus_owner = get_focus_owner()
+	return focus_owner is TextEdit or focus_owner is LineEdit
 
 
 func build_from_var_dict(var_dict : Dictionary) -> bool:
@@ -88,15 +93,6 @@ func sync_graph_node():
 	for link in links.values():
 		if link is Link:
 			link.sync_link()
-
-
-func editing_children() -> bool:
-	var editing = false
-	for child in get_children():
-		if child is Control:
-			if child.has_focus():
-				editing = true
-	return editing 
 
 
 func create_title(node_title : String):
@@ -213,9 +209,27 @@ func _remove_link(link_id : int):
 	else:
 		rect_size.y -= links[link_id].rect_size.y + SPACE_BETWEEN_SLOTS
 		links[link_id].queue_free()
+		emit_signal("remove_link", link_id)
+		
 		#warning-ignore: return_value_discarded
 		links.erase(link_id)
-		
+		shift_link_ids(link_id)
+
+
+func shift_link_ids(removed_id : int):
+	var new_links = {}
+	for link in links.values():
+		if link is Link:
+			if link.id > removed_id:
+				link.id -= 1
+			new_links[link.id] = link
+		else:
+			printerr("Link object is not of type link")
+	if new_links.size() == links.size():
+		links = new_links
+	else:
+		printerr("Error copy links to new dict")
+
 
 func get_link_scene() -> PackedScene:
 	var packed_scene : PackedScene = load("res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/Links/Link.tscn")
@@ -233,4 +247,3 @@ func get_next_free_id() -> int:
 	while next_id in links:
 		next_id += 1
 	return next_id
-

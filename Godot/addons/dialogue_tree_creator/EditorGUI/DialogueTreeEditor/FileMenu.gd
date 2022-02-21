@@ -4,6 +4,7 @@ const NO_LOCATION_SET = "NOLOCATIONSET"
 const FILE_ACTION_EXTENSION = "_file_"
 var save_location : String = NO_LOCATION_SET
 const INDEX = {SAVE = 1, SAVE_AS = 2}
+const default_open_path = "res://addons/dialogue_tree_creator/Databases/"
 
 onready var file_dialogue = $SettingsFileDialogue
 onready var open_dialogue = $OpenFileDialogue
@@ -20,6 +21,11 @@ func setup_file_menu():
 	file_dialogue.add_filter("*.JSON ; Json")
 	open_dialogue.add_filter("*.JSON ; Json")
 	
+	var test_dir = Directory.new()
+	if test_dir.dir_exists(default_open_path):
+		open_dialogue.current_dir = default_open_path
+	
+
 
 func _handle_file_action(action_index : int):
 	var popup = get_popup()

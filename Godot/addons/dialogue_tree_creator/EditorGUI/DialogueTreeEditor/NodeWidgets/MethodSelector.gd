@@ -18,6 +18,7 @@ const method_parts = {
 	NAME = "name"
 }
 
+
 func _input(event):
 	if event is InputEventKey:
 		if event.scancode == KEY_ENTER and event.pressed:

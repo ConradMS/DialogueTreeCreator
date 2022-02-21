@@ -2,6 +2,8 @@ extends MenuButton
 class_name DialogueTreeConfig
 
 const config_option = "Configure Paths"
+const default_databases_dir = "res://addons/dialogue_tree_creator/Databases/"
+
 const configureable_paths := {
 	CHARACTERS = "Characters",
 	EXPRESSIONS = "Expressions",
@@ -26,6 +28,14 @@ var popupMenu : PopupMenu
 func _ready():
 	popupMenu = get_popup()
 	_create_paths_submenu()
+	initalize_path_selector()
+
+
+func initalize_path_selector():
+	pathSelector.add_filter("*.txt ; text files");
+	var default_dir = Directory.new()
+	if default_dir.dir_exists(default_databases_dir):
+		pathSelector.current_dir = default_databases_dir
 
 
 func _create_paths_submenu():

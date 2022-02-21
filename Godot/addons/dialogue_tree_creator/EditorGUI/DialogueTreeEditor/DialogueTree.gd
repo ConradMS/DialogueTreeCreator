@@ -22,6 +22,7 @@ const NODE_REFERENCES = {
 }
 
 var nodes : Dictionary = {}
+var prop_paths : Dictionary = {}
 var recentSearches : PoolStringArray
 const MAX_RECENTS = 5
 
@@ -60,7 +61,12 @@ func add_node(type : int) -> int:
 	new_node.init(new_id)
 	nodes[new_id] = new_node
 	self.add_child(new_node)
+	
 	new_node.connect("remove_node", self, "remove_node")
+	new_node.connect("remove_link", self, "delete_link_connection", [new_node])
+	
+	if !prop_paths.empty():
+		new_node.update_paths(prop_paths)
 	
 	sync_recents()
 	return new_node.id
@@ -111,6 +117,27 @@ func node_has_connection(node : String, from_slot):
 	return null
 
 
+func delete_link_connection(link_id : int, node : TreeNode):
+	for id in node.links.keys():
+		if id >= link_id:
+			var link = node.links[id]
+			if link is Link:
+				var to_id = link.linked_id
+				if !(to_id in nodes):
+					return
+				var to_node : TreeNode = nodes[link.linked_id]
+				if is_node_connected(node.name, id, to_node.name, 0):
+					if id == link_id:
+						disconnect_nodes(node.name, id, to_node.name, 0)
+					else:
+						disconnect_node(node.name, id, to_node.name, 0)
+						connect_node(node.name, id - 1, to_node.name, 0)
+
+			else:
+				printerr("Link var is not of type Link")
+				return
+
+
 func connect_nodes(from : String, from_slot, to : String, to_slot):
 	var possible_connection = node_has_connection(from, from_slot)
 	if possible_connection != null:
@@ -130,10 +157,9 @@ func is_root_node(node : TreeNode):
 
 func remove_node(id):
 	var node_to_remove : TreeNode = nodes[id]
-	if is_root_node(node_to_remove):
-		emit_signal("warn", "Cannot Delete Root!")
-		return
-	
+#	if is_root_node(node_to_remove):
+#		emit_signal("warn", "Cannot Delete Root!")
+#		return
 	disconnect_all_connections(node_to_remove.name)
 	nodes.erase(id)
 	node_to_remove.queue_free()
@@ -172,9 +198,10 @@ func remove_link_info(from : String, from_slot):
 
 
 func update_node_paths(paths : Dictionary):
+	prop_paths = paths
 	for node in nodes.values():
 		if node is TreeNode:
-			node.update_paths(paths)
+			node.update_paths(prop_paths)
 
 
 func export_dialogue_tree() -> PoolStringArray:
@@ -208,11 +235,21 @@ func build_node(var_dict : Dictionary) -> TreeNode:
 
 # Nodes are already checked to be fine 
 func construct_dialogue_tree(nodes_array: Array):
-	nodes.clear()
-	
-	for node in get_children():
-		if node is TreeNode:
-			node.queue_free()
-	
+	clear_dialogue_tree()
 	for node in nodes_array:
 		add_tree_node(node)
+
+
+func clear_dialogue_tree():
+	for node in nodes.values():
+		if node is TreeNode:
+			node.delete_self()
+		else:
+			printerr("All nodes should be treenodes")
+	nodes.clear()
+
+
+func update_nodes_process_input(process : bool):
+	for node in nodes.values():
+		if node is TreeNode:
+			node.set_process_input(process)

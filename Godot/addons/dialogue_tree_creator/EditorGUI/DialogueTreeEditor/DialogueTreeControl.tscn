@@ -91,6 +91,7 @@ margin_top = 30.0
 margin_right = 107.0
 margin_bottom = 70.0
 
+[connection signal="visibility_changed" from="." to="." method="_on_DialogueTreeControl_visibility_changed"]
 [connection signal="open" from="VSplitContainer/OptionsBar/HBoxContainer/FileMenu" to="." method="_on_FileMenu_open"]
 [connection signal="save" from="VSplitContainer/OptionsBar/HBoxContainer/FileMenu" to="." method="_on_FileMenu_save"]
 [connection signal="file_selected" from="VSplitContainer/OptionsBar/HBoxContainer/FileMenu/SettingsFileDialogue" to="VSplitContainer/OptionsBar/HBoxContainer/FileMenu" method="_on_SettingsFileDialogue_file_selected"]

@@ -47,6 +47,7 @@ signal min_size_change()
 func _ready():
 	load_methods_from_path()
 	set_minimum_size()
+	initalize_pathselector()
 
 
 func _on_SetPath_pressed():
@@ -56,6 +57,10 @@ func _on_SetPath_pressed():
 func _on_SearchPath_pressed():
 	method_selector.popup()
 	
+
+func initalize_pathselector():
+	path_selector.add_filter("*.gd ; Gd script files")
+
 
 func set_minimum_size():
 	var min_size = Vector2(0, 0)

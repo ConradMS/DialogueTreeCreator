@@ -76,6 +76,7 @@ func build_suggestions_tab(file_path : String):
 	var exisiting_children = get_existing_children()
 	submenu_count = count_submenus()
 	var first_line = file.get_line().trim_prefix(" ")
+	
 	if first_line[0] != HEADER_DELIM:
 		printerr("Character database must start with a header")
 		return
@@ -89,10 +90,11 @@ func build_suggestions_tab(file_path : String):
 		if next_line.length() > 0:
 			if next_line[0] == HEADER_DELIM:
 				var parent_popup = _get_parent_popup(next_line, current_submenu)
+				
 				if parent_popup == null:
 					revert_change(exisiting_children)
 					return
-				
+
 				current_submenu = _make_characters_submenu(next_line.lstrip(HEADER_DELIM).dedent(), parent_popup)
 			else:
 				# Split into two sections, the first is id, second is name
@@ -103,7 +105,6 @@ func build_suggestions_tab(file_path : String):
 	#			current_submenu.set_item_id()
 	complete_changes(exisiting_children)
 
-
 func complete_changes(exisiting_children: Array):
 	for child in popupMenu.get_children():
 		if child in exisiting_children:
@@ -111,6 +112,7 @@ func complete_changes(exisiting_children: Array):
 	
 	for i in range(1, submenu_count):
 		popupMenu.remove_item(1)
+	depth = 1
 
 
 func count_submenus():
@@ -151,7 +153,7 @@ func _get_parent_popup(next_line : String, child : PopupMenu) -> PopupMenu:
 	while index < next_line.length() and next_line[index] == HEADER_DELIM:
 		count += 1
 		index += 1
-
+		
 	if count > depth:
 		if count == depth + 1:
 			depth += 1

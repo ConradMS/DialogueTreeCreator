@@ -93,7 +93,7 @@ _global_script_class_icons={
 [application]
 
 config/name="DialogueTreeCreator"
-run/main_scene="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/Main.tscn"
+run/main_scene="res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/DialogueTreeControl.tscn"
 config/icon="res://icon.png"
 
 [autoload]

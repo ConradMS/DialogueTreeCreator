@@ -44,8 +44,6 @@ func _copy_popup(popup : PopupMenu) -> PopupMenu:
 func _add_node(type : int, use_mouse_position : bool = false):
 	var added_id : int = dialogueTree.add_node(type)
 	var added_node : TreeNode = dialogueTree.nodes[added_id]
-	added_node.update_paths(settingsMenu.paths)
-	
 	update_node_imports([added_node])
 	
 	if use_mouse_position:
@@ -306,7 +304,7 @@ func get_root(nodes : Array):
 
 
 func move_node(position : Vector2, node : TreeNode):
-	node.offset = (position + dialogueTree.scroll_offset) / dialogueTree.zoom
+	node.offset = position
 
 
 func connect_nodes(nodes : Array):
@@ -332,5 +330,14 @@ func connect_from_link(from_node : TreeNode, link : Link, node_dict : Dictionary
 	var to_node = node_dict[to_id]
 	var from_slot = link.id
 	dialogueTree.connect_nodes(from_node.name, from_slot, to_node.name, 0)
+
+
+func _on_DialogueTreeControl_visibility_changed():
+	var process = visible
+	set_process_input(process)
+	update_process_input(process)
 	
 
+func update_process_input(process : bool):
+	dialogueTree.set_process_input(process)
+	dialogueTree.update_nodes_process_input(process)

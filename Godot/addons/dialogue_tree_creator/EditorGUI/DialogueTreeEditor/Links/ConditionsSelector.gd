@@ -4,6 +4,7 @@ const default_path = "res://addons/dialogue_tree_creator/Databases/default_condi
 const SECTION_DELIM = "#"
 const SUBMENU_DELIM = "*"
 const VALID_FILE_TYPE = ".txt"
+const IMPORTS_BOX_NAME = "Imports"
 onready var conditions_box_scene = preload("res://addons/dialogue_tree_creator/EditorGUI/DialogueTreeEditor/Links/PopupConditionList.tscn")
 onready var popup = $ConditionsSelector
 onready var textureButton = $TextureButton
@@ -120,12 +121,23 @@ func get_selected() -> PoolStringArray:
 
 
 func add_external_condition_box(box_name : String, box : ConditionBox):
+	self.add_child(box)
+	
 	var new_id = condition_boxes.size()
 	condition_boxes[condition_boxes.size()] = box
 	var item_list = box.get_conditions_list()
 	item_list.connect("multi_selected", self, "update_conditions")
 	
 	popup.add_item(box_name, new_id)
+	
+
+func get_imports_submenu() -> ConditionBox:
+	for box in condition_boxes.values():
+		if box is ConditionBox:
+			if IMPORTS_BOX_NAME in box.name:
+				return box
+	return null
+	
 
 
 func _on_ConditionsSelector_id_pressed(id):

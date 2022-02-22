@@ -46,34 +46,65 @@ func build_from_var_dict(var_dict : Dictionary) -> bool:
 		
 	priority = pri
 	linked_id = link_id
-	cond = conditions
+	conditions = cond
 	id = id_in
 	
 	return ok
 
 
+func add_condition(potential_new_condition : String):
+	var has_condition = false
+	var boxes = selectorRoot.condition_boxes.values()
+	for box in boxes:
+		if !(box is ConditionBox):
+			printerr("All boxes in selector root should be condition boxes")
+			return
+		
+		var list = box.conditionList
+		
+		if (list is ItemList):
+			for i in range(0, list.get_item_count()):
+				if list.get_item_text(i) == potential_new_condition:
+					has_condition = true
+		else:
+			printerr("Condition list should always be item list")
+			return
+	
+	if !(has_condition):
+		var imports_box : ConditionBox = selectorRoot.get_imports_submenu()
+		
+		if imports_box == null:
+			imports_box = condition_box_scene.instance()
+			imports_box.name = selectorRoot.IMPORTS_BOX_NAME
+			selectorRoot.add_external_condition_box(imports_box.name, imports_box)
+		
+		var item_list = imports_box.conditionList
+		if item_list is ItemList:
+			item_list.add_item(potential_new_condition)
+		else:
+			printerr("Condition list is not node type itemlist")
+			return
+
+
 func sync_link():
-#	select_conditions(conditions)
+	select_conditions(conditions)
 	priorityBox.value = priority
 	
 
 func select_conditions(cond : Array):
-	for condition_list in selectorRoot.condition_boxes.values():
-		var item_list : ItemList = condition_list
+	for condition_box in selectorRoot.condition_boxes.values():
+		if !(condition_box is ConditionBox):
+			printerr("Condition Box not type conditionBox")
+			return
+		
+		var item_list : ItemList = condition_box.conditionList
 		
 		for id in item_list.get_item_count():
 			var item_text = item_list.get_item_text(id)
 			if item_text in cond:
 				item_list.select(id)
 				cond.remove(item_text)
-				
-	if !(cond.empty()):
-		var condition_box : ConditionBox = condition_box_scene.instance()
-		for condition in cond:
-			if condition is String:
-				condition_box.add_new_condition(condition)
-				selectorRoot.add_external_condition_box("Imported Conditions", condition_box)
-	
+
 
 func _on_RemoveLink_pressed():
 	emit_signal("remove_link", id)

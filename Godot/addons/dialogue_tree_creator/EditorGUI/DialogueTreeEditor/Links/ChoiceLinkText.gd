@@ -3,6 +3,7 @@ extends TextEdit
 const DEFAULT_SIZE = 26
 const MAX_EXPAND = 3
 const SCROLL_BAR_WIDTH = 10
+
 func _on_ChoiceLinkText_text_changed():
 	var font = get_font("font")
 	var size = font.get_string_size(text)

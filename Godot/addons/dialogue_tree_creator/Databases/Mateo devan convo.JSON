@@ -1,4 +1,4 @@
-{"char_name":"","expression":"","id":0,"lines":"Yo devan some of these GBC shroties are kinda fine","links":{"0":{"conditions":[],"id":0,"linked_id":1,"priority":0}},"type":"Dialogue"}
+{"char_name":"","expression":"","id":0,"lines":"Yo devan some of these GBC shroties are kinda fine","links":{"0":{"conditions":["New condition Yessir"],"id":0,"linked_id":1,"priority":0}},"type":"Dialogue"}
 {"char_name":"","expression":"","id":1,"lines":"Yo send em","links":{"0":{"conditions":[],"id":0,"linked_id":2,"priority":0}},"type":"Dialogue"}
 {"char_name":"","expression":"","id":2,"lines":"CHeck out this brazillian baddie","links":{"0":{"conditions":[],"id":0,"linked_id":3,"priority":0}},"type":"Dialogue"}
 {"char_name":"","expression":"","id":3,"lines":"Mateo she kind of looks like a man","links":{"0":{"conditions":[],"id":0,"linked_id":4,"priority":0}},"type":"Dialogue"}

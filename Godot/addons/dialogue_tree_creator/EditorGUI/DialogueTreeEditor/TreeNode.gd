@@ -247,3 +247,10 @@ func get_next_free_id() -> int:
 	while next_id in links:
 		next_id += 1
 	return next_id
+
+
+func add_condition_import_info(conditions : PoolStringArray):
+	for potential_new_cond in conditions:
+		for link in links.values():
+			if link is Link:
+				link.add_condition(potential_new_cond)

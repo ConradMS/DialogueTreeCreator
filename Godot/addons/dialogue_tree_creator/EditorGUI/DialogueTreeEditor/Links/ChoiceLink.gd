@@ -30,3 +30,8 @@ func build_from_var_dict(var_dict : Dictionary) -> bool:
 	
 	link_text = link_text_var
 	return ok
+	
+
+func sync_link():
+	.sync_link()
+	textbox.text = link_text

@@ -7,6 +7,8 @@ onready var warningBox = $WarningMessage
 
 onready var fileMenu = $VSplitContainer/OptionsBar/HBoxContainer/FileMenu
 onready var settingsMenu = $VSplitContainer/OptionsBar/HBoxContainer/SettingsMenu2
+
+onready var top_bar = $VSplitContainer/OptionsBar/HBoxContainer
 var mouseMenu : PopupMenu
 const FILE_MENU_EXTENSION = "_file_"
 
@@ -49,7 +51,7 @@ func _add_node(type : int, use_mouse_position : bool = false):
 	if use_mouse_position:
 		added_node.offset = (get_global_mouse_position() + dialogueTree.scroll_offset) / dialogueTree.zoom
 		added_node.offset.y -= added_node.rect_size.y / 2
-		
+
 
 func _input(event):
 	if event is InputEventMouseButton:
@@ -139,6 +141,9 @@ func add_imported_information(nodes : Array):
 
 func update_node_imports(nodes : Array):
 	for node in nodes:
+		if node is TreeNode:
+			node.add_condition_import_info(import_info[IMPORTS.CONDITIONS])
+		
 		if node is GraphDialogueNode:
 			node.add_name_import_info(import_info[IMPORTS.NAMES])
 			node.add_expression_import_info(import_info[IMPORTS.EXPRESSIONS])
@@ -175,17 +180,19 @@ func collect_flag_imports(nodes : Array):
 	var flags_used : PoolStringArray = []
 	for node in nodes:
 		if node is TreeNode:
-			add_link_information(node, flags_used)
+			flags_used.append_array(add_link_information(node))
 			
 	return flags_used
 
 
-func add_link_information(node : TreeNode, conds : PoolStringArray):
+func add_link_information(node : TreeNode) -> PoolStringArray:
+	var new_conds = []
 	for link in node.links.values():
 		if link is Link:
 			for condition in link.conditions:
-				if !(condition in conds):
-					conds.append(condition)
+				if !(condition in new_conds):
+					new_conds.append(condition)
+	return new_conds
 
 
 func sync_nodes(nodes : Array):
@@ -341,3 +348,4 @@ func _on_DialogueTreeControl_visibility_changed():
 func update_process_input(process : bool):
 	dialogueTree.set_process_input(process)
 	dialogueTree.update_nodes_process_input(process)
+	top_bar.set_process_input(process)
